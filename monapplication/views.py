@@ -61,6 +61,11 @@ def delete_image(request, id):
     return JsonResponse(data)
 
 
+def image_list(request):
+    images = Image.objects.all()
+    return render(request, 'image_list.html', {'images': images})
+    
+
 def todo_list(request):
     todos = Todo.objects.all()
     return render(request, 'todo_list.html', {'todos': todos})
