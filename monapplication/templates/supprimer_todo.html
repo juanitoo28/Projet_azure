@@ -1,0 +1,10 @@
+<!-- monapplication/templates/supprimer_todo.html -->
+{% block content %}
+  <h2>Supprimer la tâche "{{ todo.titre }}"</h2>
+  <p>Êtes-vous sûr de vouloir supprimer cette tâche ?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Supprimer</button>
+    <a href="{% url 'todo_list' %}">Annuler</a>
+  </form>
+{% endblock %}

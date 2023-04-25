@@ -1,0 +1,9 @@
+<!-- monapplication/templates/ajouter_todo.html -->
+{% block content %}
+  <h2>Ajouter une nouvelle tâche</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Ajouter</button>
+  </form>
+{% endblock %}

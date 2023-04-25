@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <ul>
+        <!-- monapplication/templates/todo_list.html -->
+        {% block content %}
+        <h2>Liste des tâches</h2>
+        <ul>
+            {% for todo in todos %}
+            <li>
+                {{ todo.titre }} - {{ todo.description }}
+                <a href="{% url 'supprimer_todo' todo.id %}">Supprimer</a>
+            </li>
+            {% empty %}
+            <li>Aucune tâche pour le moment.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'ajouter_todo' %}">Ajouter une tâche</a>
+        {% endblock %}
+    </ul>
+</body>
+</html>
