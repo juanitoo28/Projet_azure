@@ -9,6 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from django.http import JsonResponse, FileResponse
+from azure.core.exceptions import ResourceNotFoundError
+import mimetypes
 
 # Configurez la chaîne de connexion et le nom du conteneur
 connection_string = "DefaultEndpointsProtocol=https;AccountName=imagesimie;AccountKey=7WaSEHfAn07JBCBFKIgUdLT36fajqgkPleWJ3WFwEo1YLVzMJY3iGVcLh65bijcaDrUlahoz3c+m+AStsEZtfQ==;EndpointSuffix=core.windows.net"
@@ -28,10 +31,23 @@ def upload(request):
             return JsonResponse({"error": "Erreur lors du téléchargement de l'image"}, status=400)
 
 def download(request, image_name):
-    blob_client = container_client.get_blob_client(image_name)
-    response = FileResponse(blob_client.download_blob().content_as_bytes(), content_type="image/jpeg")
-    response["Content-Disposition"] = f"attachment; filename={image_name}"
-    return response
+    try:
+        blob_client = container_client.get_blob_client(image_name)
+        blob_data = blob_client.download_blob()
+
+        # Déterminer automatiquement le type MIME en fonction de l'extension du fichier
+        content_type, encoding = mimetypes.guess_type(image_name)
+        if content_type is None:
+            content_type = "application/octet-stream"
+
+        # Utiliser le flux de données directement pour la réponse
+        response = FileResponse(blob_data, content_type=content_type)
+        response["Content-Disposition"] = f"attachment; filename={image_name}"
+        return response
+    except ResourceNotFoundError:
+        return JsonResponse({"error": "Image not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 # Fin de la connexion.
 

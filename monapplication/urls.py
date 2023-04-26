@@ -6,12 +6,6 @@ from .views import image_list
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [
-    path("upload", views.upload, name="upload"),
-    path("download/<str:image_name>", views.download, name="download"),
-]
-
-
 router = DefaultRouter()
 router.register(r'todos', api.TodoViewSet)
 
