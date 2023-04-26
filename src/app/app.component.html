@@ -1,9 +1,27 @@
-<input type="file" (change)="onFileSelected($event)" />
-<button (click)="onUpload()">Upload</button><br>
-<button (click)="onDownload('Cheesecake.jpg')">Download image</button>
-<div *ngFor="let image of images">
-  <img [src]="'http://localhost:8000/download/' + image" [alt]="image" />
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let image of images">
+      <div class="card mb-4">
+        <img
+          [src]="'http://localhost:8000/download/' + image"
+          [alt]="image"
+          class="card-img-top"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ image }}</h5>
+          <a
+            href="#"
+            class="btn btn-primary"
+            (click)="onDownload(image)"
+          >
+            Télécharger
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 
 
 <!-- app.component.html -->
