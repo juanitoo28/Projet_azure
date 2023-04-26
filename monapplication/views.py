@@ -5,6 +5,37 @@ from django.http import JsonResponse
 from .models import Image
 from django.views.decorators.csrf import csrf_exempt
 
+# Connexion au Storage Azure:
+from django.http import JsonResponse, FileResponse
+from django.views.decorators.csrf import csrf_exempt
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+
+# Configurez la chaîne de connexion et le nom du conteneur
+connection_string = "DefaultEndpointsProtocol=https;AccountName=imagesimie;AccountKey=7WaSEHfAn07JBCBFKIgUdLT36fajqgkPleWJ3WFwEo1YLVzMJY3iGVcLh65bijcaDrUlahoz3c+m+AStsEZtfQ==;EndpointSuffix=core.windows.net"
+container_name = "images"
+blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+container_client = blob_service_client.get_container_client(container_name)
+
+@csrf_exempt
+def upload(request):
+    if request.method == "POST":
+        image = request.FILES.get("image")
+        if image:
+            blob_client = container_client.get_blob_client(image.name)
+            blob_client.upload_blob(image.read(), overwrite=True)
+            return JsonResponse({"message": "Image téléchargée avec succès"})
+        else:
+            return JsonResponse({"error": "Erreur lors du téléchargement de l'image"}, status=400)
+
+def download(request, image_name):
+    blob_client = container_client.get_blob_client(image_name)
+    response = FileResponse(blob_client.download_blob().content_as_bytes(), content_type="image/jpeg")
+    response["Content-Disposition"] = f"attachment; filename={image_name}"
+    return response
+
+# Fin de la connexion.
+
+
 def image_list(request):
     images = Image.objects.all()
     data = {

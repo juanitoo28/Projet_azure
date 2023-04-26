@@ -16,7 +16,7 @@ class Image(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     url = models.URLField()
-    image_file = models.ImageField(upload_to='images')
+    image_file = models.ImageField(upload_to='images/')
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):
