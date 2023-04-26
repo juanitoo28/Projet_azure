@@ -29,7 +29,7 @@ These variables are shared by several examples
 # Detect faces, Detect adult or racy content, Detect the color scheme, 
 # Detect domain-specific content, Detect image types, Detect objects
 images_folder = os.path.join (os.path.dirname(os.path.abspath(__file__)), "images")
-remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/landmark.jpg"
+remote_image_url = "https://imagesimie.blob.core.windows.net/images/Cheesecake.jpg"
 '''
 END - Quickstart variables
 '''

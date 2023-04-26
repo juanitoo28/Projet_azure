@@ -18,6 +18,7 @@ urlpatterns = [
     path("upload", views.upload, name="upload"),
     path("download/<str:image_name>", views.download, name="download"),
     path('images/', views.get_images_list, name='get_images_list'),
+    path("get_images_list", views.get_images_list, name="get_images_list"),
 ]
 
 if settings.DEBUG:

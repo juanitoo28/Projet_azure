@@ -132,3 +132,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AZURE_COMPUTER_VISION_ENDPOINT = "5d95dc53ca4b47dcac0a33590375b684"
+AZURE_COMPUTER_VISION_SUBSCRIPTION_KEY = "https://visionimagesazure.cognitiveservices.azure.com/"
