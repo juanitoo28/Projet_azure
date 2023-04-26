@@ -1,6 +1,9 @@
 <input type="file" (change)="onFileSelected($event)" />
-<button (click)="onUpload()">Upload</button>
-<button (click)="onDownload('example-image.jpg')">Download example-image.jpg</button>
+<button (click)="onUpload()">Upload</button><br>
+<button (click)="onDownload('Cheesecake.jpg')">Download image</button>
+<div *ngFor="let image of images">
+  <img [src]="'http://localhost:8000/download/' + image" [alt]="image" />
+</div>
 
 
 <!-- app.component.html -->

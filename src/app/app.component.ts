@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { HttpClient } from "@angular/common/http"; 
 
 @Component({
   selector: "app-root",
@@ -7,10 +7,26 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
+  images: string[] = [];
   title = "azure-storage-demo";
   selectedFile: File | null = null;
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.getImagesList();
+  }
+
+  getImagesList(): void {
+    this.http.get<string[]>("http://localhost:8000/images/").subscribe(
+      (response) => {
+        this.images = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
