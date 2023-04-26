@@ -48,6 +48,17 @@ def download(request, image_name):
         return JsonResponse({"error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+    
+
+# Récupération de toutes les images
+def get_images_list(request):
+    try:
+        images = []
+        for blob in container_client.list_blobs():
+            images.append(blob.name)
+        return JsonResponse(images, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 # Fin de la connexion.
 

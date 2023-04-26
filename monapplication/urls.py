@@ -14,9 +14,10 @@ urlpatterns = [
     path('ajouter/', views.ajouter_todo, name='ajouter_todo'),
     path('supprimer/<int:todo_id>/', views.supprimer_todo, name='supprimer_todo'),
     path('api/', include(router.urls)),
-    path('images/', image_list, name='image_list'),
+    path('imagesold/', image_list, name='image_list'),
     path("upload", views.upload, name="upload"),
     path("download/<str:image_name>", views.download, name="download"),
+    path('images/', views.get_images_list, name='get_images_list'),
 ]
 
 if settings.DEBUG:
