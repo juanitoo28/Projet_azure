@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http"; 
+import { environment } from '../environnements/environnement';
+
 
 @Component({
   selector: "app-root",
@@ -7,26 +9,57 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-  images: string[] = [];
+  images: any[] = []; // Ajoutez cette ligne pour déclarer la propriété 'images'
+  // images: string[] = [];
   title = "azure-storage-demo";
   selectedFile: File | null = null;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.getImagesList();
+    this.getImages();
   }
 
-  getImagesList(): void {
-    this.http.get<string[]>("http://localhost:8000/images/").subscribe(
-      (response) => {
-        this.images = response;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  getImages(): void {
+    // Remplacez "http://localhost:8000" par l'URL de votre serveur Django en production
+    this.http.get<any[]>("http://localhost:8000/get_images_list").subscribe((data) => {
+      console.log(data); // Ajoutez cette ligne pour afficher les données brutes
+      this.images = data.map((image) => {
+        // Effectuez les modifications nécessaires sur l'objet image ici, si nécessaire
+        // Par exemple, si vous devez ajouter des tags ou d'autres informations
+  
+        return image; // Assurez-vous de retourner l'objet image à la fin
+      });
+    });
   }
+  
+  // getImages(): void {
+  //   // Remplacez "http://localhost:8000" par l'URL de votre serveur Django en production
+  //   this.http.get<any[]>("http://localhost:8000/get_images_list").subscribe((data) => {
+  //     this.images = data.map((image) => {
+  //       const tags = image.analysis.map((tag) => tag.name); // Modifiez cette ligne en fonction de la structure correcte
+  //       return {
+  //         name: image.name,
+  //         url: image.url,
+  //         tags: tags,
+  //       };
+  //     });
+  //   });
+  // }
+    
+  
+  
+  
+  // getImagesList(): void {
+  //   this.http.get<string[]>("http://localhost:8000/images/").subscribe(
+  //     (response) => {
+  //       this.images = response;
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;

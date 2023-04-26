@@ -50,4 +50,12 @@
     margin-bottom: 0.5rem;
     max-width: 100%; // Ne dépasse pas la largeur de l'image
   }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  
   

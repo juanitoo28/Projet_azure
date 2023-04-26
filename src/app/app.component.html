@@ -5,15 +5,21 @@
   </div>
   <div class="carousel-container">
     <div class="carousel" *ngFor="let image of images">
-      <div class="image-container">
+      <!-- <div class="image-container">
         <img
           [src]="'http://localhost:8000/download/' + image"
           [alt]="image"
           class="image"
         />
-      </div>
+      </div> -->
+    <div class="image-container">
+      <img *ngIf="image && image.url" [src]="image.url" alt="Image" />
+    </div>
+
       <div class="image-info">
-        <h5 class="image-title">{{ image }}</h5>
+        <h5 class="image-title">{{ image.name }}</h5>
+        <p class="image-description">{{ image.description }}</p>
+        <p class="image-tags">{{ image.tags }}</p>
         <button class="btn btn-primary" (click)="onDownload(image)">
           Télécharger
         </button>
