@@ -1,21 +1,53 @@
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
+.carousel-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem;
+    margin: 0;
+  }
   
-    &:hover {
-      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  .carousel {
+    display: inline-block;
+    width: 100%;
+    max-width: 550px; // Ajustez la taille maximale des images ici
+    margin-right: 1rem;
+  }
+  
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; // 16:9 ratio
+    overflow: hidden;
+  
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s;
+    }
+  
+    &:hover img {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     }
   }
   
-  .card-img-top {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+  .image-info {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
-  .card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .image-title {
+    color: #000;
+    word-wrap: break-word; // Permet le retour à la ligne pour les titres longs
+    text-align: center;
+    margin-bottom: 0.5rem;
+    max-width: 100%; // Ne dépasse pas la largeur de l'image
   }
   

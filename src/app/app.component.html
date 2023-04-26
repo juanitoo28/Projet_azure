@@ -1,32 +1,23 @@
 <div class="container mt-4">
-  <div class="row">
-    <div class="col-md-4" *ngFor="let image of images">
-      <div class="card mb-4">
+  <div class="d-flex justify-content-center mb-3">
+    <input type="file" (change)="onFileSelected($event)" />
+    <button class="btn btn-success ms-3" (click)="onUpload()">Uploader</button>
+  </div>
+  <div class="carousel-container">
+    <div class="carousel" *ngFor="let image of images">
+      <div class="image-container">
         <img
           [src]="'http://localhost:8000/download/' + image"
           [alt]="image"
-          class="card-img-top"
+          class="image"
         />
-        <div class="card-body">
-          <h5 class="card-title">{{ image }}</h5>
-          <a
-            href="#"
-            class="btn btn-primary"
-            (click)="onDownload(image)"
-          >
-            Télécharger
-          </a>
-        </div>
+      </div>
+      <div class="image-info">
+        <h5 class="image-title">{{ image }}</h5>
+        <button class="btn btn-primary" (click)="onDownload(image)">
+          Télécharger
+        </button>
       </div>
     </div>
   </div>
 </div>
-
-
-
-<!-- app.component.html -->
-<!-- <div *ngFor="let todo of todos">
-  {{ todo.titre }} - {{ todo.description }}
-  <button (click)="deleteTodo(todo.id)">Supprimer</button>
-</div>
-<button (click)="addTodo()">Ajouter une tâche</button> -->
