@@ -9,9 +9,14 @@ from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from azure.cognitiveservices.vision.computervision.models import VisualFeatureTypes
 from msrest.authentication import CognitiveServicesCredentials
 from .utils import get_image_tags
+from django.core.paginator import Paginator
 
 from .models import Todo, Image
 from .forms import TodoForm
+import json
+
+from monapplication.models import Image
+
 
 
 # Configurez la chaîne de connexion et le nom du conteneur
@@ -53,18 +58,50 @@ def download(request, image_name):
         return JsonResponse({"error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
-    
+
+
 def save_image_info(name, url, tags):
-    image = Image(name=name, url=url, tags=tags)
-    image.save()
+    image = Image.objects.filter(name=name, url=url).first()
+    if image is None:
+        image = Image(name=name, url=url, tags=tags)
+        image.save()
+    else:
+        image.tags = tags
+        image.save()
+
 
 def get_images_list(request):
-    blobs_list = container_client.list_blobs()
+    page_number = request.GET.get('page', 1)  # Utiliser la pagination
+    page_size = 10  # Choisir une taille de page appropriée
+
+    blobs_list = list(container_client.list_blobs())  # Convertir les blobs en liste Python
+    paginator = Paginator(blobs_list, page_size)
+    page = paginator.get_page(page_number)
     images_list = []
 
-    for blob in blobs_list:
+    for blob in page:
         image_url = f"{container_client.url}/{blob.name}"
-        tags = get_image_tags(image_url)
+        
+        # Récupérer l'image de la base de données ou la créer si elle n'existe pas
+        image = Image.objects.filter(name=blob.name, url=image_url).first()
+        
+        if image is None:
+            image = Image(name=blob.name, url=image_url)
+            created = True
+        else:
+            created = False
+
+        # Traiter l'image avec l'API seulement si elle vient d'être créée ou si elle n'a pas de tags
+        if created or not image.tags:
+            tags = get_image_tags(image_url)
+            image.tags = json.dumps(tags)  # Convertir la liste de tags en chaîne JSON
+            image.save()
+        else:
+            try:
+                tags = json.loads(image.tags)  # Convertir la chaîne JSON en liste de tags
+            except json.JSONDecodeError:
+                tags = []
+
         image_info = {
             "name": blob.name,
             "url": image_url,
@@ -72,9 +109,32 @@ def get_images_list(request):
         }
         images_list.append(image_info)
 
-        save_image_info(blob.name, image_url, tags)
-
     return JsonResponse(images_list, safe=False)
+
+
+
+
+# def save_image_info(name, url, tags):
+#     image = Image(name=name, url=url, tags=tags)
+#     image.save()
+
+# def get_images_list(request):
+#     blobs_list = container_client.list_blobs()
+#     images_list = []
+
+#     for blob in blobs_list:
+#         image_url = f"{container_client.url}/{blob.name}"
+#         tags = get_image_tags(image_url)
+#         image_info = {
+#             "name": blob.name,
+#             "url": image_url,
+#             "tags": tags
+#         }
+#         images_list.append(image_info)
+
+#         save_image_info(blob.name, image_url, tags)
+
+#     return JsonResponse(images_list, safe=False)
 
 def todo_list(request):
     todos = Todo.objects.all()
