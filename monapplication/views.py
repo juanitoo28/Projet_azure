@@ -17,8 +17,6 @@ import json
 
 from monapplication.models import Image
 
-
-
 # Configurez la chaîne de connexion et le nom du conteneur
 connection_string = "DefaultEndpointsProtocol=https;AccountName=imagesimie;AccountKey=7WaSEHfAn07JBCBFKIgUdLT36fajqgkPleWJ3WFwEo1YLVzMJY3iGVcLh65bijcaDrUlahoz3c+m+AStsEZtfQ==;EndpointSuffix=core.windows.net"
 container_name = "images"
@@ -38,9 +36,14 @@ def upload(request):
         if image:
             blob_client = container_client.get_blob_client(image.name)
             blob_client.upload_blob(image.read(), overwrite=True)
-            return JsonResponse({"message": "Image téléchargée avec succès"})
+
+            # Récupérer la liste des images mise à jour
+            images_list = get_images_list_internal()
+
+            return JsonResponse({"message": "Image téléchargée avec succès", "images": images_list})
         else:
             return JsonResponse({"error": "Erreur lors du téléchargement de l'image"}, status=400)
+
 
 def download(request, image_name):
     try:
@@ -105,37 +108,14 @@ def get_images_list(request):
         image_info = {
             "name": blob.name,
             "url": image_url,
-            "tags": tags
+            "tags": tags,
+            "created_at": image.created_at.isoformat()  # Ajouter cette ligne
         }
         images_list.append(image_info)
 
-    return JsonResponse(images_list, safe=False)
+    images_list.sort(key=lambda x: x["created_at"], reverse=True)
 
-
-
-
-
-# def save_image_info(name, url, tags):
-#     image = Image(name=name, url=url, tags=tags)
-#     image.save()
-
-# def get_images_list(request):
-#     blobs_list = container_client.list_blobs()
-#     images_list = []
-
-#     for blob in blobs_list:
-#         image_url = f"{container_client.url}/{blob.name}"
-#         tags = get_image_tags(image_url)
-#         image_info = {
-#             "name": blob.name,
-#             "url": image_url,
-#             "tags": tags
-#         }
-#         images_list.append(image_info)
-
-#         save_image_info(blob.name, image_url, tags)
-
-#     return JsonResponse(images_list, safe=False)
+    return JsonResponse(images_list, safe=False)    
 
 def todo_list(request):
     todos = Todo.objects.all()
@@ -164,4 +144,42 @@ def image_list(request):
         'images': [image.to_dict() for image in images]
     }
     return JsonResponse(data)
+
+
+def get_images_list_internal():
+    blobs_list = list(container_client.list_blobs())  # Convertir les blobs en liste Python
+    images_list = []
+
+    for blob in blobs_list:
+        image_url = f"{container_client.url}/{blob.name}"
+        
+        # Récupérer l'image de la base de données ou la créer si elle n'existe pas
+        image = Image.objects.filter(name=blob.name, url=image_url).first()
+        
+        if image is None:
+            image = Image(name=blob.name, url=image_url)
+            created = True
+        else:
+            created = False
+
+        # Traiter l'image avec l'API seulement si elle vient d'être créée ou si elle n'a pas de tags
+        if created or not image.tags:
+            tags = get_image_tags(image_url)
+            image.tags = json.dumps(tags)  # Convertir la liste de tags en chaîne JSON
+            image.save()
+        else:
+            try:
+                tags = json.loads(image.tags)  # Convertir la chaîne JSON en liste de tags
+            except json.JSONDecodeError:
+                tags = []
+
+        image_info = {
+            "name": blob.name,
+            "url": image_url,
+            "tags": tags
+        }
+        images_list.append(image_info)
+
+    return images_list
+
 

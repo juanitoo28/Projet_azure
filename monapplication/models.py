@@ -14,20 +14,11 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-# class Image(models.Model):
-#     title = models.CharField(max_length=255)
-#     description = models.TextField(blank=True)
-#     url = models.URLField()
-#     image_file = models.ImageField(upload_to='images/')
-#     tags = models.ManyToManyField(Tag)
-
-#     def __str__(self):
-#         return self.title
-
 from django.utils import timezone
 
 class Image(models.Model):
-    name = models.CharField(max_length=100, default='')
+    name = models.CharField(max_length=200, default='')
+    description = models.CharField(max_length=500, blank=True)
     url = models.URLField(max_length=200, default='')
     tags = models.TextField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
@@ -35,6 +26,7 @@ class Image(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 
