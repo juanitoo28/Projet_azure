@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views, api
-from .views import image_list
+from .views import image_list, display_images
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -19,6 +19,7 @@ urlpatterns = [
     path("download/<str:image_name>", views.download, name="download"),
     path('images/', views.get_images_list, name='get_images_list'),
     path("get_images_list", views.get_images_list, name="get_images_list"),
+    path('images-display/', display_images, name='display_images'),
 ]
 
 if settings.DEBUG:

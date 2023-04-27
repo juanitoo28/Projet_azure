@@ -58,6 +58,11 @@ def download(request, image_name):
         return JsonResponse({"error": "Image not found"}, status=404)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+    
+def display_images(request):
+    images = Image.objects.all()
+    context = {'images': images}
+    return render(request, 'bdd.html', context)
 
 
 def save_image_info(name, url, tags):
@@ -71,15 +76,10 @@ def save_image_info(name, url, tags):
 
 
 def get_images_list(request):
-    page_number = request.GET.get('page', 1)  # Utiliser la pagination
-    page_size = 10  # Choisir une taille de page appropriée
-
     blobs_list = list(container_client.list_blobs())  # Convertir les blobs en liste Python
-    paginator = Paginator(blobs_list, page_size)
-    page = paginator.get_page(page_number)
     images_list = []
 
-    for blob in page:
+    for blob in blobs_list:
         image_url = f"{container_client.url}/{blob.name}"
         
         # Récupérer l'image de la base de données ou la créer si elle n'existe pas
@@ -110,6 +110,7 @@ def get_images_list(request):
         images_list.append(image_info)
 
     return JsonResponse(images_list, safe=False)
+
 
 
 
