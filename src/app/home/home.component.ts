@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http"; 
 import { environment } from '../../environnements/environnement';
 import { Router } from '@angular/router';
+import { ImageModalComponent } from '../image-modal/image-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +14,21 @@ export class HomeComponent {
   images: any[] = [];
   title = "azure-storage-demo";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getImages();
+  }
+
+  openModal(image: any): void {
+    const dialogRef = this.dialog.open(ImageModalComponent, {
+      width: '500px',
+      data: {
+        url: image.url,
+        title: image.name,
+        description: 'Description de l\'image ' + image.description,
+      },
+    });
   }
 
   getImages(): void {
@@ -34,7 +47,7 @@ export class HomeComponent {
     });
   }
 
-  onDownload(imageName: string): void {
+  onDownload(imageName: any): void {
     const API_URL = environment.apiUrl;
     this.http
       .get(`${API_URL}/download/${imageName}`, {
