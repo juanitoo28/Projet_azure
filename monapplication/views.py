@@ -78,33 +78,31 @@ def save_image_info(name, url, tags, description):
         image.description = description
         image.save()
 
-
-
 def get_images_list(request):
-    blobs_list = list(container_client.list_blobs())  # Convertir les blobs en liste Python
+    blobs_list = list(container_client.list_blobs())
     images_list = []
+
+    search = request.GET.get('search', '').lower()
 
     for blob in blobs_list:
         image_url = f"{container_client.url}/{blob.name}"
-        
-        # Récupérer l'image de la base de données ou la créer si elle n'existe pas
+
         image = Image.objects.filter(name=blob.name, url=image_url).first()
-        
+
         if image is None:
             image = Image(name=blob.name, url=image_url)
             created = True
         else:
             created = False
 
-        # Traiter l'image avec l'API seulement si elle vient d'être créée ou si elle n'a pas de tags
         if created or not image.tags or not image.description:
             tags, description = get_image_tags(image_url)
-            image.tags = json.dumps(tags)  # Convertir la liste de tags en chaîne JSON
+            image.tags = json.dumps(tags)
             image.description = description
             image.save()
         else:
             try:
-                tags = json.loads(image.tags)  # Convertir la chaîne JSON en liste de tags
+                tags = json.loads(image.tags)
             except json.JSONDecodeError:
                 tags = []
 
@@ -117,9 +115,60 @@ def get_images_list(request):
         }
         images_list.append(image_info)
 
+    if search:
+        images_list = list(filter(
+            lambda image: (
+                search in image["name"].lower() or
+                search in image["description"].lower() or
+                any(search in tag.lower() for tag in image["tags"])
+            ),
+            images_list
+        ))
+
     images_list.sort(key=lambda x: x["created_at"], reverse=True)
 
-    return JsonResponse(images_list, safe=False)    
+    return JsonResponse(images_list, safe=False)
+
+# def get_images_list(request):
+#     blobs_list = list(container_client.list_blobs())  # Convertir les blobs en liste Python
+#     images_list = []
+
+#     for blob in blobs_list:
+#         image_url = f"{container_client.url}/{blob.name}"
+        
+#         # Récupérer l'image de la base de données ou la créer si elle n'existe pas
+#         image = Image.objects.filter(name=blob.name, url=image_url).first()
+        
+#         if image is None:
+#             image = Image(name=blob.name, url=image_url)
+#             created = True
+#         else:
+#             created = False
+
+#         # Traiter l'image avec l'API seulement si elle vient d'être créée ou si elle n'a pas de tags
+#         if created or not image.tags or not image.description:
+#             tags, description = get_image_tags(image_url)
+#             image.tags = json.dumps(tags)  # Convertir la liste de tags en chaîne JSON
+#             image.description = description
+#             image.save()
+#         else:
+#             try:
+#                 tags = json.loads(image.tags)  # Convertir la chaîne JSON en liste de tags
+#             except json.JSONDecodeError:
+#                 tags = []
+
+#         image_info = {
+#             "name": blob.name,
+#             "url": image_url,
+#             "tags": tags,
+#             "description": image.description,
+#             "created_at": image.created_at.isoformat()
+#         }
+#         images_list.append(image_info)
+
+#     images_list.sort(key=lambda x: x["created_at"], reverse=True)
+
+#     return JsonResponse(images_list, safe=False)    
 
 def todo_list(request):
     todos = Todo.objects.all()
