@@ -9,15 +9,13 @@ def get_image_tags(image_url):
 
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
 
-    try:
-        features = [VisualFeatureTypes.tags, VisualFeatureTypes.description]
-        image_analysis = computervision_client.analyze_image(image_url, features)
+    tags_result = computervision_client.analyze_image(image_url, visual_features=[VisualFeatureTypes.tags])
+    description_result = computervision_client.describe_image(image_url)
 
-        tags = [tag.name for tag in image_analysis.tags]
-        description = image_analysis.description.captions[0].text if image_analysis.description.captions else ""
-    except Exception as e:
-        print(f"Error getting tags and description for image: {e}")
-        tags = []
+    tags = [tag.name for tag in tags_result.tags]
+    if description_result.captions:
+        description = description_result.captions[0].text
+    else:
         description = ""
 
     return tags, description

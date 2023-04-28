@@ -17,15 +17,22 @@ class Tag(models.Model):
 from django.utils import timezone
 
 class Image(models.Model):
-    name = models.CharField(max_length=200, default='')
-    description = models.CharField(max_length=500, blank=True)
-    url = models.URLField(max_length=200, default='')
-    tags = models.TextField(blank=True)
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=255)
+    url = models.CharField(max_length=1024)
+    tags = models.TextField()
+    description = models.TextField()  # Ajouter cette ligne pour le champ description
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "url": self.url,
+            "tags": json.loads(self.tags),
+            "description": self.description,  # Ajouter la description ici
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat()
+        }
+
 
 
 
