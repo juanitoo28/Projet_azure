@@ -26,10 +26,11 @@
         </ul>
       </div>  
       <div class="search">
-        <input type="text">
-          <div class="icon-search"><mat-icon>search</mat-icon>
-          </div>
-        </div> 
+        <input type="text" (keyup)="filterImages($event)">
+        <div class="icon-search">
+          <mat-icon>search</mat-icon>
+        </div>
+      </div>
     </div>
   </nav>
   

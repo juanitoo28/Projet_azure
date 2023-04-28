@@ -1,24 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClient } from "@angular/common/http"; 
 import { environment } from '../../environnements/environnement';
 import { Router } from '@angular/router';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SharedService } from '../shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy{
   images: any[] = [];
   title = "azure-storage-demo";
+  originalImages: any[] = [];
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {}
+  searchTextSubscription: Subscription;
+
+  constructor(private http: HttpClient, public dialog: MatDialog, private sharedService: SharedService) {
+    this.searchTextSubscription = this.sharedService.searchText$.subscribe(searchText => {
+      this.getImages(searchText);
+    });
+  }
 
   ngOnInit(): void {
     this.getImages();
   }
+  
+
+  // filterImages(searchText: string): void {
+  //   searchText = searchText.toLowerCase();
+  //   this.images = this.originalImages.filter((image) => {
+  //     return (
+  //       image.name.toLowerCase().includes(searchText) ||
+  //       image.description.toLowerCase().includes(searchText) ||
+  //       image.tags.toLowerCase().includes(searchText)
+  //     );
+  //   });
+  // }
 
   openModal(image: any): void {
     const dialogRef = this.dialog.open(ImageModalComponent, {
@@ -32,10 +53,13 @@ export class HomeComponent {
     });
   }
 
-  getImages(): void {
+  getImages(searchText: string = ''): void {
     const API_URL = environment.apiUrl;
-    this.http.get<any[]>(`${API_URL}/get_images_list`).subscribe((data) => {
+    this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: searchText } }).subscribe((data) => {
+   
+    // this.http.get<any[]>(`${API_URL}/get_images_list`).subscribe((data) => {
       console.log(data);
+      this.originalImages = this.images;
       this.images = data.map((image) => {
         return {
           name: image.name,
@@ -66,6 +90,9 @@ export class HomeComponent {
           console.log(error);
         }
       );
+  }
+  ngOnDestroy(): void {
+    this.searchTextSubscription.unsubscribe();
   }
 }
 
