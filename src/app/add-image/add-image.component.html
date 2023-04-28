@@ -1,6 +1,11 @@
 <p>Add image</p>
 <app-header></app-header>
-<div class="d-flex justify-content-center mb-3">
+<div class="send">
+    <label for="file" class="label-file">Choisir une image</label>
+    <input id="file" class="input-file" type="file" (change)="onFileSelected($event)">
+    <div class="icon-send" (click)="onUpload()"><mat-icon>send</mat-icon></div>
+  </div>
+<!-- <div class="d-flex justify-content-center mb-3">
     <input type="file" (change)="onFileSelected($event)" />
     <button class="btn btn-success ms-3" (click)="onUpload()">Uploader</button>
-</div>
+</div> -->

@@ -1,0 +1,31 @@
+.send{
+    display: flex;
+    align-items: center;
+    }
+.icon-send{
+    padding: 5px;
+    border: 1px solid #00b1ca;
+    margin: 1px;
+    text-align: center;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background: #00b1ca;
+}
+
+.input-file {
+    display: none;
+}
+
+.label-file {
+    cursor: pointer;
+    color: #00b1ca;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.label-file:hover {
+    color: #25a5c4;
+}
