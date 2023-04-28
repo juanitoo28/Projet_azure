@@ -1,0 +1,97 @@
+.carousel-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem;
+    margin: 0;
+  }
+  
+  .carousel {
+    display: inline-block;
+    width: 100%;
+    max-width: 550px; // Ajustez la taille maximale des images ici
+    margin-right: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; // 16:9 ratio
+    overflow: hidden;
+  
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s;
+    }
+  
+    &:hover img {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  .image-info {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .field-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.2rem;
+  }
+  
+  .image-title {
+    color: #000;
+    word-wrap: break-word; // Permet le retour à la ligne pour les titres longs
+    text-align: center;
+    margin-bottom: 0.5rem;
+    max-width: 100%; // Ne dépasse pas la largeur de l'image
+    font-size: 1.2rem; // Ajustez la taille du titre ici
+  }
+  
+  .image-description {
+    color: #000;
+    word-wrap: break-word; // Permet le retour à la ligne pour les descriptions longues
+    text-align: center;
+    margin-bottom: 0.5rem;
+    max-width: 100%; // Ne dépasse pas la largeur de l'image
+  }
+  
+  .image-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  
+    .tag {
+      background-color: #007bff;
+      color: #fff;
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+    
+  .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+  

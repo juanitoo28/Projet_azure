@@ -1,0 +1,35 @@
+nav {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 1rem;
+  
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  
+    .nav-link {
+      color: #000;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-left: 1.5rem;
+      margin-right: 1.5rem;
+  
+      &:hover {
+        color: #007bff;
+      }
+    }
+  
+    .navbar-collapse {
+      justify-content: flex-end;
+  
+      .navbar-nav {
+        margin-right: 0;
+  
+        .nav-item {
+          margin-right: 1rem;
+        }
+      }
+    }
+  }
+  

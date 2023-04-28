@@ -10,6 +10,9 @@
   width: 100%;
   max-width: 550px; // Ajustez la taille maximale des images ici
   margin-right: 1rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  border-radius: 5px;
 }
 
 .image-container {
@@ -43,6 +46,12 @@
   align-items: center;
 }
 
+.field-title {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.2rem;
+}
+
 .image-title {
   color: #000;
   word-wrap: break-word; // Permet le retour à la ligne pour les titres longs
@@ -72,26 +81,16 @@
     padding: 0.2rem 0.5rem;
     border-radius: 10px;
     margin-right: 0.5rem;
-    margin-bottom: 0
+    margin-bottom: 0.5rem;
   }
 }
 
-.image-description {
-  color: #333;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  text-align: center;
-  max-width: 100%; // Ne dépasse pas la largeur de l'image
-  overflow-wrap: break-word; // Permet le retour à la ligne pour la description longue
-  }
-  
-  .btn-primary {
+.btn-primary {
   background-color: #007bff;
   border-color: #007bff;
-  }
+}
   
-  .btn-primary:hover {
+.btn-primary:hover {
   background-color: #0069d9;
   border-color: #0062cc;
-  }
+}
