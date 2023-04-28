@@ -21,45 +21,22 @@ export class AppComponent {
   }
 
   getImages(): void {
-    // Remplacez "http://localhost:8000" par l'URL de votre serveur Django en production
-    this.http.get<any[]>("http://localhost:8000/get_images_list").subscribe((data) => {
-      console.log(data); // Ajoutez cette ligne pour afficher les données brutes
+    const API_URL = environment.apiUrl;
+    this.http.get<any[]>(`${API_URL}/get_images_list`).subscribe((data) => {
+      console.log(data);
       this.images = data.map((image) => {
-        // Effectuez les modifications nécessaires sur l'objet image ici, si nécessaire
-        // Par exemple, si vous devez ajouter des tags ou d'autres informations
-  
-        return image; // Assurez-vous de retourner l'objet image à la fin
+        return {
+          name: image.name,
+          description: image.description,
+          url: image.url,
+          tags: image.tags,
+          created_at: new Date(image.created_at),
+        };
       });
     });
   }
-  
-  // getImages(): void {
-  //   // Remplacez "http://localhost:8000" par l'URL de votre serveur Django en production
-  //   this.http.get<any[]>("http://localhost:8000/get_images_list").subscribe((data) => {
-  //     this.images = data.map((image) => {
-  //       const tags = image.analysis.map((tag) => tag.name); // Modifiez cette ligne en fonction de la structure correcte
-  //       return {
-  //         name: image.name,
-  //         url: image.url,
-  //         tags: tags,
-  //       };
-  //     });
-  //   });
-  // }
-    
-  
-  
-  
-  // getImagesList(): void {
-  //   this.http.get<string[]>("http://localhost:8000/images/").subscribe(
-  //     (response) => {
-  //       this.images = response;
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }
+
+
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -75,20 +52,39 @@ export class AppComponent {
     }
     const formData = new FormData();
     formData.append("image", this.selectedFile, this.selectedFile.name);
-
-    this.http.post("http://localhost:8000/upload", formData).subscribe(
+    const API_URL = environment.apiUrl;
+    this.http.post(`${API_URL}/upload`, formData).subscribe(
       (response) => {
         console.log(response);
+        this.getImages();
+  
+        // Effacer le champ du nom de l'image et afficher un message de succès
+        const fileInput = document.getElementById("file-input") as HTMLInputElement;
+        const uploadMessage = document.getElementById("upload-message") as HTMLSpanElement;
+        if (fileInput && uploadMessage) {
+          fileInput.value = '';
+          uploadMessage.textContent = " Image téléchargée avec succès";
+          uploadMessage.style.color = "green";
+        }
       },
       (error) => {
         console.log(error);
+  
+        // Afficher un message d'erreur
+        const uploadMessage = document.getElementById("upload-message") as HTMLSpanElement;
+        if (uploadMessage) {
+          uploadMessage.textContent = "Erreur lors du téléchargement de l'image";
+          uploadMessage.style.color = "red";
+        }
       }
     );
   }
+  
 
   onDownload(imageName: string): void {
+    const API_URL = environment.apiUrl;
     this.http
-      .get(`http://localhost:8000/download/${imageName}`, {
+      .get(`${API_URL}/download/${imageName}`, {
         responseType: "blob",
       })
       .subscribe(

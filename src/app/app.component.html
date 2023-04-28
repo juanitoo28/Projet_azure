@@ -1,7 +1,8 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-center mb-3">
-    <input type="file" (change)="onFileSelected($event)" />
+    <input type="file" id="file-input" (change)="onFileSelected($event)" />
     <button class="btn btn-success ms-3" (click)="onUpload()">Uploader</button>
+    <span id="upload-message" class="ms-3"></span>
   </div>
   <div class="carousel-container">
     <div class="carousel" *ngFor="let image of images">
@@ -11,13 +12,15 @@
 
       <div class="image-info">
         <h5 class="image-title">{{ image.name }}</h5>
-        <p class="image-description">{{ image.description }}</p>
+        <div class="image-description">{{ image.description }}</div> <!-- Ajout de la description -->
         <div class="image-tags">
           <span *ngFor="let tag of image.tags" class="tag">{{ tag }}</span>
         </div>
-        <button class="btn btn-primary" (click)="onDownload(image.name)">
-          Télécharger
-        </button>
+        <div class="button-container">
+          <button class="btn btn-primary" (click)="onDownload(image.name)">
+            Télécharger
+          </button>
+        </div>
       </div>
     </div>
   </div>
