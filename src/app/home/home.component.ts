@@ -25,8 +25,9 @@ export class HomeComponent {
       width: '500px',
       data: {
         url: image.url,
-        title: image.name,
+        name: image.name,
         description: 'Description de l\'image ' + image.description,
+        tags: 'Tags: ' + image.tags
       },
     });
   }
