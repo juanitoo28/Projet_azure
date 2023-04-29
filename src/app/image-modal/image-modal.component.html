@@ -1,1 +1,10 @@
-<p>image-modal works!</p>
+<h2 mat-dialog-title class="modal-title">{{ data.name }}</h2>
+<mat-dialog-content>
+  <img [src]="data.url" [alt]="data.name" class="modal-image" />
+  <h3 class="modal-description">{{ data.description }}</h3>
+  <h3 class="modal-tags">{{ data.tags }}</h3>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onDelete(data.name)">Supprimer</button>
+  <button mat-button (click)="onClose()">Fermer</button>
+</mat-dialog-actions>
