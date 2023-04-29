@@ -1,67 +1,76 @@
 nav {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding: 0.5rem 1rem;
-  
-    .navbar-brand {
-      font-size: 1.5rem;
-      font-weight: bold;
+  background-color: black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 1rem;
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .nav-link {
+    color: #00b1ca;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+
+    &:hover {
+      color: #FFF;
+      cursor: pointer;
     }
-  
-    .nav-link {
-      color: #000;
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-left: 1.5rem;
-      margin-right: 1.5rem;
-  
-      &:hover {
-        color: #007bff;
-      }
-    }
-  
-    .navbar-collapse {
-      justify-content: flex-end;
-  
-      .navbar-nav {
-        margin-right: 0;
-  
-        .nav-item {
-          margin-right: 1rem;
-        }
+  }
+  ul{
+    display: flex;
+    list-style:none;
+  };
+  .container-fluid{
+    display: flex;
+    justify-content: center;
+  }
+
+  .navbar-collapse {
+    justify-content: flex-end;
+
+    .navbar-nav {
+      margin-right: 0;
+
+      .nav-item {
+        margin-right: 1rem;
       }
     }
   }
+}
 
 
 .search{
-  display: flex;
-  align-items: center;
- }
- .icon-search{
-   padding: 5px;
-   border: 1px solid #00b1ca;
-   margin: 1px;
-   text-align: center;
-   color: #fff;
-   border-radius: 50%;
-   width: 20px;
-   height: 20px;
-   cursor: pointer;
-   background: #00b1ca;
- }
+display: flex;
+align-items: center;
+}
+.icon-search{
+ padding: 5px;
+ border: 1px solid #00b1ca;
+ margin: 1px;
+ text-align: center;
+ color: #fff;
+ border-radius: 50%;
+ width: 20px;
+ height: 20px;
+ cursor: pointer;
+ background: #00b1ca;
+}
 
 input{
-  padding: 10px 12px;
-  margin: 5px;
-  border: 1px solid #bec5dc;
-  color: #464f6a;
-  border-radius: 5px;
+padding: 10px 12px;
+margin: 5px;
+border: 1px solid #bec5dc;
+color: #464f6a;
+border-radius: 5px;
 }
 select{
-  padding: 10px 12px;
-  margin: 5px;
-  border: 1px solid #bec5dc;
-  color: #464f6a;
-  border-radius: 5px;
+padding: 10px 12px;
+margin: 5px;
+border: 1px solid #bec5dc;
+color: #464f6a;
+border-radius: 5px;
 }

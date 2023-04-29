@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg">
+<!-- <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" routerLink="/">Mon Application</a>
       <button
@@ -42,4 +42,38 @@
       </button>
     </div>
   </nav>
-  
+   -->
+
+   <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <span class="navbar-toggler-icon"></span>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <h3 class="nav-link" routerLink="/">Accueil</h3>
+          </li>
+          <li class="nav-item">
+            <h3 class="nav-link" routerLink="/add-image">Ajouter une image</h3>
+          </li>
+          <li class="nav-item">
+            <h3 class="nav-link" routerLink="/app-liste-images">Liste images</h3>
+          </li>
+        </ul>
+      </div>  
+      <div class="search">
+        <input type="text" (keyup)="filterImages($event)">
+        <div class="icon-search">
+          <mat-icon>search</mat-icon>
+        </div>
+      </div>
+    </div>
+    <input
+        #inputElement
+        (keyup)="filterImages($event)"
+        type="text"
+        placeholder="Search"
+      />
+      <button mat-icon-button (click)="startListening()">
+        <mat-icon>mic</mat-icon>
+      </button>
+  </nav>

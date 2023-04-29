@@ -1,24 +1,62 @@
+body{
+  background-color: black;
+}
 .carousel-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 1rem;
-    margin: 0;
+  overflow-x: auto;
+  justify-content: space-around;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: black;
   }
   
   .carousel {
-    display: inline-block;
     max-width: 550px; // Ajustez la taille maximale des images ici
     margin-right: 1rem;
   }
+ 
+  .image{
+    border-radius: 20px;
+  }
+  
   .image-container {
     display: flex;
     justify-content: center;
     position: relative;
     width: 100%;
-    height: 200px; /* Modifier la hauteur des images en fonction de vos préférences */
-    overflow: hidden;
-  }
+    height: 200px;
+    // overflow: hidden;
+    cursor: pointer;
+    margin: 20px;
   
+    img {
+      transition: transform 0.2s ease-out;
+    }
+  
+    &:hover img {
+      transform: scale(1.05);
+    }
+  
+    .image-info {
+      // position: absolute;
+      // bottom: 0;
+      // left: 0;
+      // right: 0;
+      // background-color: rgba(0, 0, 0, 0);
+      // color: white;
+      // padding: 1rem;
+      // transform: translateY(100%);
+      // transition: transform 0.2s ease-out;
+  
+      button {
+        margin-top: 0.5rem;
+      }
+    }
+  
+    &:hover .image-info {
+      transform: translateY(0);
+    }
+  }
   
   .img {
     position: absolute;
@@ -30,19 +68,8 @@
     transition: all 0.3s;
   }
   
-  .image-info {
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem;
-    text-align: center;
-    align-self: flex-end;
-  }
-  
   .image-title {
-    color: #000;
+    color: #fff;
     word-wrap: break-word; // Permet le retour à la ligne pour les titres longs
     text-align: center;
     margin-bottom: 0.5rem;
@@ -59,12 +86,17 @@
     cursor: pointer;
     color: #fff;
   }
+  .download-button{
+    mat-icon{
+      margin: auto;
+    }
+  }
  
   
   .header{
     align-items: center;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   .label-file {
     cursor: pointer;
@@ -159,12 +191,13 @@ h3{
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 0.5rem;
+  align-items: center;
 
   .tag {
-    background-color: #007bff;
+    background-color: #00b1ca;
     color: #fff;
     padding: 0.2rem 0.5rem;
-    border-radius: 10px;
+    border-radius: 20px;
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
   }
