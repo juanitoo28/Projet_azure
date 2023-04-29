@@ -1,19 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SharedService } from '../shared.service';
-import { HttpClient } from '@angular/common/http'; // Importez HttpClient
+import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
+  searchText = '';
+  searchTextChangedSubscription: Subscription = new Subscription();
   constructor(
     private sharedService: SharedService,
-    private http: HttpClient // Injectez HttpClient
+    private http: HttpClient
   ) {}
 
-  filterImages(event: KeyboardEvent): void {
+  ngOnInit(): void {
+    this.searchTextChangedSubscription = this.sharedService.searchTextChanged.subscribe(
+      (text) => {
+        this.searchText = text;
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.searchTextChangedSubscription.unsubscribe();
+  }
+
+  filterImages(event: Event): void {
     const target = event.target as HTMLInputElement;
     const searchText = target?.value || '';
     this.sharedService.setSearchText(searchText);
@@ -44,7 +60,8 @@ export class HeaderComponent {
 
           this.http.post<{ transcript: string }>(apiUrl, formData).subscribe(
             (response) => {
-              this.sharedService.setSearchText(response.transcript);
+              const transcript = response.transcript.replace(/\.$/, '');
+              this.sharedService.setSearchText(transcript);
             },
             (error) => {
               console.error('Error:', error);
