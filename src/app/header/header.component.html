@@ -31,6 +31,15 @@
           <mat-icon>search</mat-icon>
         </div>
       </div>
+      <input
+        #inputElement
+        (keyup)="filterImages($event)"
+        type="text"
+        placeholder="Search"
+      />
+      <button mat-icon-button (click)="startListening()">
+        <mat-icon>mic</mat-icon>
+      </button>
     </div>
   </nav>
   
