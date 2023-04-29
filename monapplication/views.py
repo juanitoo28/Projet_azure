@@ -22,6 +22,8 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
 import azure.cognitiveservices.speech as speechsdk
+from monapplication.models import Image
+
 
 
 
@@ -164,47 +166,6 @@ def get_images_list(request):
 
     return JsonResponse(images_list, safe=False)
 
-# def get_images_list(request):
-#     blobs_list = list(container_client.list_blobs())  # Convertir les blobs en liste Python
-#     images_list = []
-
-#     for blob in blobs_list:
-#         image_url = f"{container_client.url}/{blob.name}"
-        
-#         # Récupérer l'image de la base de données ou la créer si elle n'existe pas
-#         image = Image.objects.filter(name=blob.name, url=image_url).first()
-        
-#         if image is None:
-#             image = Image(name=blob.name, url=image_url)
-#             created = True
-#         else:
-#             created = False
-
-#         # Traiter l'image avec l'API seulement si elle vient d'être créée ou si elle n'a pas de tags
-#         if created or not image.tags or not image.description:
-#             tags, description = get_image_tags(image_url)
-#             image.tags = json.dumps(tags)  # Convertir la liste de tags en chaîne JSON
-#             image.description = description
-#             image.save()
-#         else:
-#             try:
-#                 tags = json.loads(image.tags)  # Convertir la chaîne JSON en liste de tags
-#             except json.JSONDecodeError:
-#                 tags = []
-
-#         image_info = {
-#             "name": blob.name,
-#             "url": image_url,
-#             "tags": tags,
-#             "description": image.description,
-#             "created_at": image.created_at.isoformat()
-#         }
-#         images_list.append(image_info)
-
-#     images_list.sort(key=lambda x: x["created_at"], reverse=True)
-
-#     return JsonResponse(images_list, safe=False)    
-
 def todo_list(request):
     todos = Todo.objects.all()
     return render(request, 'todo_list.html', {'todos': todos})
@@ -235,7 +196,7 @@ def image_list(request):
 
 
 def get_images_list_internal():
-    blobs_list = list(container_client.list_blobs())  # Convertir les blobs en liste Python
+    blobs_list = list(container_client.list_blobs()) 
     images_list = []
 
     for blob in blobs_list:
@@ -273,15 +234,33 @@ def get_images_list_internal():
 
     return images_list
 
+# @csrf_exempt
+# @require_http_methods(["DELETE"])
+# def delete_image(request, image_name):
+#     # Supprimez l'image du stockage
+#     container_client.delete_blob(image_name)
+
+#     # Supprimez l'image de la base de données
+#     Image.objects.filter(name=image_name).delete()  
+
+#     return JsonResponse({"message": f"Image {image_name} supprimée avec succès."})
+
 @csrf_exempt
 @require_http_methods(["DELETE"])
 def delete_image(request, image_name):
+    try:
+        # Vérifiez si l'image existe dans le stockage
+        blob_client = container_client.get_blob_client(image_name)
+        blob_properties = blob_client.get_blob_properties()
+    except ResourceNotFoundError:
+        return JsonResponse({"error": f"Image {image_name} non trouvée dans le stockage."}, status=404)
+
     # Supprimez l'image du stockage
     container_client.delete_blob(image_name)
 
     # Supprimez l'image de la base de données
-    Image.objects.filter(name=image_name).delete()
+    image = Image.objects.get(name=image_name)
+    image.delete()
 
     return JsonResponse({"message": f"Image {image_name} supprimée avec succès."})
-
 
