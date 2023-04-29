@@ -62,8 +62,10 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",  # Autoriser l'accès depuis l'application Angular en local
+    "http://localhost:4200",
+    "http://localhost:8000",
 ]
 
 ROOT_URLCONF = "djangoAzure.urls"

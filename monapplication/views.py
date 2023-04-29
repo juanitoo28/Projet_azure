@@ -16,6 +16,14 @@ from .forms import TodoForm
 import json
 
 from monapplication.models import Image
+from django.urls import path
+from . import views
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+
+import azure.cognitiveservices.speech as speechsdk
+
+
 
 # Configurez la chaîne de connexion et le nom du conteneur
 connection_string = "DefaultEndpointsProtocol=https;AccountName=imagesimie;AccountKey=7WaSEHfAn07JBCBFKIgUdLT36fajqgkPleWJ3WFwEo1YLVzMJY3iGVcLh65bijcaDrUlahoz3c+m+AStsEZtfQ==;EndpointSuffix=core.windows.net"
@@ -28,6 +36,33 @@ subscription_key = "5d95dc53ca4b47dcac0a33590375b684"
 endpoint = "https://visionimagesazure.cognitiveservices.azure.com/"
 
 computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+
+@csrf_exempt
+def azure_speech_to_text(request):
+    if request.method == 'POST':
+        audio_data = request.FILES['audio_data']
+
+        SPEECH_KEY="105f4e7e164d415c992abf844c46f925"
+        SPEECH_REGION="westeurope"
+        # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
+        speech_config = speechsdk.SpeechConfig(subscription=SPEECH_KEY, region=SPEECH_REGION)
+        speech_config.speech_recognition_language="en-US"
+
+        audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
+        speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+
+        # Effectuez la reconnaissance vocale
+        print("Speak into your microphone.")
+        result = speech_recognizer.recognize_once_async().get()
+        # result = speech_recognizer.recognize_once()
+
+        # Retournez le texte transcrit
+        if result.reason == speechsdk.ResultReason.RecognizedSpeech:
+            return JsonResponse({'transcript': result.text})
+        else:
+            return JsonResponse({'error': 'Speech recognition failed'})
+
+    return JsonResponse({'error': 'Invalid request'})
 
 @csrf_exempt
 def upload(request):
@@ -237,5 +272,16 @@ def get_images_list_internal():
         images_list.append(image_info)
 
     return images_list
+
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def delete_image(request, image_name):
+    # Supprimez l'image du stockage
+    container_client.delete_blob(image_name)
+
+    # Supprimez l'image de la base de données
+    Image.objects.filter(name=image_name).delete()
+
+    return JsonResponse({"message": f"Image {image_name} supprimée avec succès."})
 
 
