@@ -20,6 +20,7 @@ urlpatterns = [
     path('images/', views.get_images_list, name='get_images_list'),
     path("get_images_list", views.get_images_list, name="get_images_list"),
     path('images-display/', display_images, name='display_images'),
+    # path('delete_image/<str:image_name>', views.delete_image, name='delete_image'),
     path('delete_image/<str:image_name>', views.delete_image, name='delete_image'),
     path('azure_speech_to_text/', views.azure_speech_to_text, name='azure_speech_to_text'),
 ]

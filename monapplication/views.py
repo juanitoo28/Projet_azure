@@ -234,6 +234,27 @@ def get_images_list_internal():
 
     return images_list
 
+from django.db import transaction
+
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def delete_image(request, image_name):
+    with transaction.atomic():
+        # Vérifiez si l'image existe dans la base de données
+        image = Image.objects.filter(name=image_name).first()
+        if image is None:
+            return JsonResponse({"error": f"Image {image_name} non trouvée dans la base de données."}, status=404)
+        
+        # Supprimez l'image du stockage
+        container_client.delete_blob(image_name)
+
+        # Supprimez l'image de la base de données
+        image.delete()
+
+    return JsonResponse({"message": f"Image {image_name} supprimée avec succès."})
+
+
+
 # @csrf_exempt
 # @require_http_methods(["DELETE"])
 # def delete_image(request, image_name):
@@ -245,22 +266,22 @@ def get_images_list_internal():
 
 #     return JsonResponse({"message": f"Image {image_name} supprimée avec succès."})
 
-@csrf_exempt
-@require_http_methods(["DELETE"])
-def delete_image(request, image_name):
-    try:
-        # Vérifiez si l'image existe dans le stockage
-        blob_client = container_client.get_blob_client(image_name)
-        blob_properties = blob_client.get_blob_properties()
-    except ResourceNotFoundError:
-        return JsonResponse({"error": f"Image {image_name} non trouvée dans le stockage."}, status=404)
+# @csrf_exempt
+# @require_http_methods(["DELETE"])
+# def delete_image(request, image_name):
+#     try:
+#         # Vérifiez si l'image existe dans le stockage
+#         blob_client = container_client.get_blob_client(image_name)
+#         blob_properties = blob_client.get_blob_properties()
+#     except ResourceNotFoundError:
+#         return JsonResponse({"error": f"Image {image_name} non trouvée dans le stockage."}, status=404)
 
-    # Supprimez l'image du stockage
-    container_client.delete_blob(image_name)
+#     # Supprimez l'image du stockage
+#     container_client.delete_blob(image_name)
 
-    # Supprimez l'image de la base de données
-    image = Image.objects.get(name=image_name)
-    image.delete()
+#     # Supprimez l'image de la base de données
+#     image = Image.objects.get(name=image_name)
+#     image.delete()
 
-    return JsonResponse({"message": f"Image {image_name} supprimée avec succès."})
+#     return JsonResponse({"message": f"Image {image_name} supprimée avec succès."})
 
