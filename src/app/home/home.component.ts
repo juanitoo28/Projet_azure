@@ -51,7 +51,15 @@ export class HomeComponent implements OnDestroy{
         tags: 'Tags: ' + image.tags
       },
     });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'delete') {
+        // Refresh the images list if an image was deleted
+        this.getImages();
+      }
+    });
   }
+  
 
   getImages(searchText: string = ''): void {
     const API_URL = environment.apiUrl;
