@@ -47,8 +47,8 @@ export class HomeComponent implements OnDestroy{
       data: {
         url: image.url,
         name: image.name,
-        description: 'Description de l\'image ' + image.description,
-        tags: 'Tags: ' + image.tags
+        description: '' + image.description,
+        tags: '' + image.tags
       },
     });
   

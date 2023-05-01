@@ -1,14 +1,21 @@
-<h2 mat-dialog-title class="modal-title">{{ data.name }}</h2>
 <mat-dialog-content>
+  <div class="close-button">
+    <img src="../../assets/close.png" alt="Fermer" (click)="onClose()" />
+  </div>
+  <h2 mat-dialog-title class="modal-title">{{ data.name }}</h2>
   <div class="modal-image-container">
     <img [src]="data.url" [alt]="data.name" class="modal-image" />
   </div>
   <h3 class="modal-label">Description :</h3>
-  <h3 class="modal-description">{{ data.description }}</h3>
-  <!-- <h3 class="modal-label">Tags :</h3> -->
-  <h3 class="modal-tags"><span *ngFor="let tag of data.tags.split(','); let isLast = last">{{ tag }}<ng-container *ngIf="!isLast">, </ng-container></span></h3>
+  <p class="modal-description">{{ capitalizeFirstLetter(data.description) }}</p>
+  <h3 class="modal-label">Tags :</h3>
+  <div class="modal-tags">
+    <span class="tag" *ngFor="let tag of data.tags.split(',')">{{ tag }}</span>
+  </div>
+  <div class="delete-button">
+    <img src="../../assets/supprimer.png" alt="Supprimer" (click)="onDelete(data.name)" />
+  </div>
+    <div class="download-button">
+      <img src="../../assets/download.png" alt="Download" (click)="onDownload(data.name)" />
+    </div>
 </mat-dialog-content>
-<mat-dialog-actions class="modal-actions">
-  <button mat-raised-button color="warn" (click)="onDelete(data.name)">Supprimer</button>
-  <button mat-raised-button color="accent" (click)="onClose()">Fermer</button>
-</mat-dialog-actions>

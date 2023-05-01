@@ -2,6 +2,14 @@
   background-color: #2d2d2d !important;
   color: white;
   padding: 20px;
+  position: relative;
+  width: 600px; // Ajouté pour agrandir la modale
+}
+
+.close-button {
+  position: absolute;
+  top: 20px; // Augmenté l'espace en haut
+  right: 20px; // Augmenté l'espace à droite
 }
 
 .modal-image-container {
@@ -24,32 +32,65 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #008000; // Changé en vert pour correspondre à votre demande
+  text-align: center; // Ajouté pour centrer le titre
 }
 
 .modal-label {
   font-size: 16px;
   margin-bottom: 5px;
   font-weight: bold;
-  color: #dcdcdc;
+  color: #00b1ca;
 }
 
 .modal-description {
   font-size: 18px;
   margin-bottom: 10px;
-  color: black;
+  color: #000000;
+  font-style: italic;
 }
 
 .modal-tags {
   font-size: 16px;
   margin-bottom: 20px;
-}
-
-.mat-dialog-content {
-  text-align: center;
-}
-
-.modal-actions {
   display: flex;
-  justify-content: space-between;
-  padding-top: 20px;
+  flex-wrap: wrap;
+
+  .tag {
+    background-color: #00b1ca;
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 20px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 }
+
+.delete-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  img {
+    width: 30px; // Ajustez la largeur de l'image ici
+    height: 30px; // Ajustez la hauteur de l'image ici
+    cursor: pointer;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  left: 90%;
+  z-index: 10;
+  // background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+
+  img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+}
+

@@ -20,6 +20,31 @@ export class ImageModalComponent {
     this.dialogRef.close();
   }
 
+  capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  onDownload(imageName: any): void {
+    const API_URL = environment.apiUrl;
+    this.http
+      .get(`${API_URL}/download/${imageName}`, {
+        responseType: "blob",
+      })
+      .subscribe(
+        (response) => {
+          const url = window.URL.createObjectURL(response);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = imageName;
+          link.click();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+  
+
   // onDelete(imageName: string): void {
   //   this.http.delete(`/delete_image/${imageName}`).subscribe(
   //     (response) => {
