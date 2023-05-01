@@ -1,10 +1,14 @@
 <h2 mat-dialog-title class="modal-title">{{ data.name }}</h2>
 <mat-dialog-content>
-  <img [src]="data.url" [alt]="data.name" class="modal-image" />
+  <div class="modal-image-container">
+    <img [src]="data.url" [alt]="data.name" class="modal-image" />
+  </div>
+  <h3 class="modal-label">Description :</h3>
   <h3 class="modal-description">{{ data.description }}</h3>
-  <h3 class="modal-tags">{{ data.tags }}</h3>
+  <!-- <h3 class="modal-label">Tags :</h3> -->
+  <h3 class="modal-tags"><span *ngFor="let tag of data.tags.split(','); let isLast = last">{{ tag }}<ng-container *ngIf="!isLast">, </ng-container></span></h3>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="onDelete(data.name)">Supprimer</button>
-  <button mat-button (click)="onClose()">Fermer</button>
+<mat-dialog-actions class="modal-actions">
+  <button mat-raised-button color="warn" (click)="onDelete(data.name)">Supprimer</button>
+  <button mat-raised-button color="accent" (click)="onClose()">Fermer</button>
 </mat-dialog-actions>

@@ -44,10 +44,23 @@ export class ListeImagesComponent implements OnInit {
 
   onSelect(): void {
     console.log(`Selected image: ${this.selectedImage}`);
+    const selectedImageObject = this.images.find((image) => image.url === this.selectedImage);
     this.dialog.open(ImageModalComponent, {
       width: '600px',
-      data: this.selectedImage
+      data: selectedImageObject
     });
   }
+  
 
+  openModal(image: any): void {
+    const dialogRef = this.dialog.open(ImageModalComponent, {
+      width: '500px',
+      data: {
+        url: image.url,
+        name: image.name,
+        description: 'Description de l\'image ' + image.description,
+        tags: 'Tags: ' + image.tags
+      }
+    });
+  }
 }

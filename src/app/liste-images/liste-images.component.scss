@@ -1,7 +1,40 @@
-select{
-    padding: 10px 12px;
-    margin: 5px;
-    border: 1px solid #bec5dc;
-    color: #464f6a;
-    border-radius: 5px;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+}
+
+.liste {
+  padding: 20px;
+  margin: 40px auto;
+  max-width: 400px;
+  min-width: 200px; /* Ajout d'une largeur minimale */
+  text-align: center; /* Centrer le titre */
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #00b1ca;
+}
+
+.select-container {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Ajout d'une largeur de 100% pour que la liste déroulante occupe l'espace disponible */
+}
+
+select {
+  padding: 10px 12px;
+  margin: 5px;
+  border: 1px solid #bec5dc;
+  color: #464f6a;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: 100%; /* Ajout d'une largeur de 100% pour que la liste déroulante occupe l'espace disponible */
+
+  &:focus {
+    border-color: #00b1ca;
   }
+}

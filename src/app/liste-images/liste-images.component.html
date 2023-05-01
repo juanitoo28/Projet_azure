@@ -1,9 +1,11 @@
 <app-header></app-header>
 
 <div class="liste">
-    <h2>Liste des images : </h2>
-    <select [(ngModel)]="selectedImage" (change)="onSelect()">
-        <option *ngFor="let image of images" [ngValue]="image">{{ image.name }}</option>
-      </select>      
-    <br>  
+  <h2>Liste des images :</h2>
+  <div class="select-container">
+    <select [(ngModel)]="selectedImage" (change)="openModal(selectedImage)">
+      <option *ngFor="let image of images" [ngValue]="image">{{ image.name }}</option>
+    </select>
   </div>
+</div>
+

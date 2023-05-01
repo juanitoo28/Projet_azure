@@ -1,31 +1,90 @@
-.send{
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+  }
+  
+  .send {
     display: flex;
     align-items: center;
-    }
-.icon-send{
-    padding: 5px;
-    border: 1px solid #00b1ca;
-    margin: 1px;
-    text-align: center;
-    color: #fff;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    background: #00b1ca;
-}
-
-.input-file {
-    display: none;
-}
-
-.label-file {
+    flex-direction: column;
+    padding: 20px;
+    border: 2px solid #00b1ca;
+    border-radius: 10px;
+    background-color: #fff;
+    max-width: 400px;
+    margin: 40px auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .label-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .label-file {
     cursor: pointer;
     color: #00b1ca;
     font-weight: bold;
+    font-size: 18px;
     margin-right: 5px;
-}
-
-.label-file:hover {
+    transition: color 0.3s ease;
+  }
+  
+  .label-file:hover {
     color: #25a5c4;
-}
+  }
+  
+  .icon-send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px solid #00b1ca;
+    margin: 10px;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background: #00b1ca;
+    transition: all 0.3s ease;
+  }
+  
+  .icon-send:hover {
+    background: #25a5c4;
+    border-color: #25a5c4;
+  }
+  
+  .input-file {
+    display: none;
+  }
+  
+  .image-preview {
+    margin-top: 10px;
+    max-width: 200px;
+    max-height: 200px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
+  }
+  
+  .upload-message {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
