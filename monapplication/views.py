@@ -25,17 +25,15 @@ import azure.cognitiveservices.speech as speechsdk
 from monapplication.models import Image
 
 
-
-
 # Configurez la chaîne de connexion et le nom du conteneur
-connection_string = "DefaultEndpointsProtocol=https;AccountName=imagesimie;AccountKey=7WaSEHfAn07JBCBFKIgUdLT36fajqgkPleWJ3WFwEo1YLVzMJY3iGVcLh65bijcaDrUlahoz3c+m+AStsEZtfQ==;EndpointSuffix=core.windows.net"
-container_name = "images"
+connection_string = "DefaultEndpointsProtocol=https;AccountName=stockageimg;AccountKey=+KTveQvkiJMlL0ClC5tDla72ld5d/fTKzvi5OJ4knqYliTtR38/hNtbd/uBkiEfVfFF5ARgUKa2V+AStElvydg==;EndpointSuffix=core.windows.net"
+container_name = "storage"
 
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 container_client = blob_service_client.get_container_client(container_name)
 
-subscription_key = "5d95dc53ca4b47dcac0a33590375b684"
-endpoint = "https://visionimagesazure.cognitiveservices.azure.com/"
+subscription_key = "a255003848c6446fba3e2953c48621f2"
+endpoint = "https://apiimg.cognitiveservices.azure.com/"
 
 computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
 
@@ -116,6 +114,8 @@ def save_image_info(name, url, tags, description):
         image.save()
 
 def get_images_list(request):
+    # Lister les blobs dans le conteneur
+
     blobs_list = list(container_client.list_blobs())
     images_list = []
 

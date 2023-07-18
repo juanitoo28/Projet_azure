@@ -4,8 +4,8 @@ from azure.cognitiveservices.vision.computervision.models import VisualFeatureTy
 
 
 def get_image_tags(image_url):
-    subscription_key = "5d95dc53ca4b47dcac0a33590375b684"
-    endpoint = "https://visionimagesazure.cognitiveservices.azure.com/"
+    subscription_key = "a255003848c6446fba3e2953c48621f2"
+    endpoint = "https://apiimg.cognitiveservices.azure.com/"
 
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
 

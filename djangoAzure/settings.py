@@ -132,10 +132,10 @@ WSGI_APPLICATION = "djangoAzure.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bdd_images',
+        'NAME': 'images',
         'USER': 'jean',
         'PASSWORD': 'Liberty!',
-        'HOST': 'newbddimages.postgres.database.azure.com',
+        'HOST': 'bddimg.postgres.database.azure.com',
         'PORT': '5432',
     }
 }
@@ -175,5 +175,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AZURE_COMPUTER_VISION_ENDPOINT = "5d95dc53ca4b47dcac0a33590375b684"
-AZURE_COMPUTER_VISION_SUBSCRIPTION_KEY = "https://visionimagesazure.cognitiveservices.azure.com/"
+AZURE_COMPUTER_VISION_ENDPOINT = "a255003848c6446fba3e2953c48621f2"
+AZURE_COMPUTER_VISION_SUBSCRIPTION_KEY = "https://apiimg.cognitiveservices.azure.com/"
