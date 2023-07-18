@@ -42,7 +42,7 @@ def azure_speech_to_text(request):
     if request.method == 'POST':
         audio_data = request.FILES['audio_data']
 
-        SPEECH_KEY="105f4e7e164d415c992abf844c46f925"
+        SPEECH_KEY="26f0aa02efb842cf82756f651e8cf9ef"
         SPEECH_REGION="westeurope"
         # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
         speech_config = speechsdk.SpeechConfig(subscription=SPEECH_KEY, region=SPEECH_REGION)
