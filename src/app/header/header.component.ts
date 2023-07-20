@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           });
 
           // Remplacez l'URL par l'URL de votre serveur Django
-          const apiUrl = 'http://localhost:8000/azure_speech_to_text/';
+          const apiUrl = 'https://appimg.azurewebsites.net/azure_speech_to_text';
 
           const formData = new FormData();
           formData.append('audio_data', audioBlob, 'audio.webm');
