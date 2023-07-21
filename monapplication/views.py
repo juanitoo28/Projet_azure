@@ -67,17 +67,21 @@ def azure_speech_to_text(request):
 @csrf_exempt
 def upload(request):
     if request.method == "POST":
-        image = request.FILES.get("image")
-        if image:
+        images = request.FILES.getlist("image")
+        uploaded_images = []
+
+        for image in images:
             blob_client = container_client.get_blob_client(image.name)
             blob_client.upload_blob(image.read(), overwrite=True)
+            uploaded_images.append(image.name)
 
-            # Récupérer la liste des images mise à jour
-            images_list = get_images_list_internal()
+        # Récupérer la liste des images mise à jour
+        images_list = get_images_list_internal()
 
-            return JsonResponse({"message": "Image téléchargée avec succès", "images": images_list})
-        else:
-            return JsonResponse({"error": "Erreur lors du téléchargement de l'image"}, status=400)
+        return JsonResponse({"message": "Images téléchargées avec succès", "uploaded_images": uploaded_images, "images": images_list})
+    else:
+        return JsonResponse({"error": "Invalid request"}, status=400)
+
 
 
 def download(request, image_name):
