@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'https://quiet-spire-34784-29599753cfdf.herokuapp.com/django/api/todos/';
+  private apiUrl = 'http://localhost:8000/django/api/todos/';
 
   constructor(private http: HttpClient) { }
 

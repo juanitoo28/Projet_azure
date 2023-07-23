@@ -10,8 +10,15 @@
   <p class="modal-description">{{ capitalizeFirstLetter(data.description) }}</p>
   <h3 class="modal-label">Tags :</h3>
   <div class="modal-tags">
-    <span class="tag" *ngFor="let tag of data.tags.split(',')">{{ tag }}</span>
-  </div>
+    <div *ngFor="let tag of data.tags">
+        <span class="tag">{{ tag.name }}</span> :
+        <span class="confidence">{{ tag.confidence }}</span>
+    </div>
+</div>
+
+
+
+  
   <div class="delete-button">
     <img src="../../assets/supprimer.png" alt="Supprimer" (click)="onDelete(data.name)" />
   </div>

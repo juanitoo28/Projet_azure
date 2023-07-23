@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-image.component.scss']
 })
 export class AddImageComponent implements OnInit {
-  selectedFile: File | null = null;
-  previewUrl: string | null = null;
+  selectedFiles: File[] = [];
+  previewUrls: string[] = [];
   uploadMessage: string | null = null;
   uploadMessageColor: string | null = null;
 
@@ -19,32 +19,34 @@ export class AddImageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onFileSelected(event: Event): void {
+  onFilesSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
     if (target.files) {
-      this.selectedFile = target.files[0];
-      this.previewFile();
+      this.selectedFiles = Array.from(target.files);
+      this.previewFiles();
     }
   }
 
-  previewFile() {
-    if (this.selectedFile) {
+  previewFiles() {
+    this.previewUrls = [];
+    this.selectedFiles.forEach((file) => {
       const reader = new FileReader();
-      reader.readAsDataURL(this.selectedFile);
+      reader.readAsDataURL(file);
       reader.onload = () => {
-        this.previewUrl = reader.result as string;
+        this.previewUrls.push(reader.result as string);
       };
-    }
+    });
   }
   
-
   onUpload(): void {
-    if (!this.selectedFile) {
+    if (this.selectedFiles.length === 0) {
       console.log("No file selected");
       return;
     }
     const formData = new FormData();
-    formData.append("image", this.selectedFile, this.selectedFile.name);
+    this.selectedFiles.forEach((file) => {
+      formData.append("image", file, file.name);
+    });
     const API_URL = environment.apiUrl;
     this.http.post(`${API_URL}/upload`, formData).subscribe(
       (response) => {
@@ -54,14 +56,14 @@ export class AddImageComponent implements OnInit {
         this.router.navigate(['/']);
 
         // Effacer le champ du nom de l'image et afficher un message de succès
-        this.uploadMessage = "Image téléchargée avec succès";
+        this.uploadMessage = "Images téléchargées avec succès";
         this.uploadMessageColor = "green";
       },
       (error) => {
         console.log(error);
 
         // Afficher un message d'erreur
-        this.uploadMessage = "Erreur lors du téléchargement de l'image";
+        this.uploadMessage = "Erreur lors du téléchargement des images";
         this.uploadMessageColor = "red";
       }
     );

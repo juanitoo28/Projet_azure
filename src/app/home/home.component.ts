@@ -1,45 +1,62 @@
 import { Component, OnDestroy } from '@angular/core';
-import { HttpClient } from "@angular/common/http"; 
+import { HttpClient } from "@angular/common/http";
 import { environment } from '../../environnements/environnement';
-import { Router } from '@angular/router';
-import { ImageModalComponent } from '../image-modal/image-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ImageModalComponent } from '../image-modal/image-modal.component';
 import { SharedService } from '../shared.service';
 import { Subscription } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnDestroy{
+export class HomeComponent implements OnDestroy {
   images: any[] = [];
-  title = "azure-storage-demo";
   originalImages: any[] = [];
-
+  searchText: string = '';
+  title = "azure-storage-demo";
   searchTextSubscription: Subscription;
 
   constructor(private http: HttpClient, public dialog: MatDialog, private sharedService: SharedService) {
     this.searchTextSubscription = this.sharedService.searchText$.subscribe(searchText => {
-      this.getImages(searchText);
+      this.searchText = searchText;
+      this.getImages();
     });
   }
 
   ngOnInit(): void {
     this.getImages();
   }
-  
 
-  // filterImages(searchText: string): void {
-  //   searchText = searchText.toLowerCase();
-  //   this.images = this.originalImages.filter((image) => {
-  //     return (
-  //       image.name.toLowerCase().includes(searchText) ||
-  //       image.description.toLowerCase().includes(searchText) ||
-  //       image.tags.toLowerCase().includes(searchText)
-  //     );
-  //   });
-  // }
+  ngOnDestroy(): void {
+    this.searchTextSubscription.unsubscribe();
+  }
+
+  onDeleteSelected(): void {
+    const API_URL = environment.apiUrl;
+    // Filtrer les images sélectionnées
+    const selectedImages = this.images.filter(image => image.selected);
+
+    // Utiliser 'forkJoin' de 'rxjs' pour effectuer plusieurs requêtes de suppression en même temps
+    const deleteObservables = selectedImages.map(image =>
+      this.http.delete(`${API_URL}/delete_image/${encodeURIComponent(image.name)}`)
+    );
+
+    // Exécuter toutes les requêtes de suppression
+    forkJoin(deleteObservables).subscribe(() => {
+      console.log('Images supprimées avec succès');
+      // Rafraîchir les images après la suppression
+      this.getImages();
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  onSearchChange(): void {
+    this.getImages();
+  }
 
   openModal(image: any): void {
     const dialogRef = this.dialog.open(ImageModalComponent, {
@@ -47,8 +64,8 @@ export class HomeComponent implements OnDestroy{
       data: {
         url: image.url,
         name: image.name,
-        description: '' + image.description,
-        tags: '' + image.tags
+        description: image.description,
+        tags: image.tags  // Pass image.tags as is
       },
     });
   
@@ -61,12 +78,9 @@ export class HomeComponent implements OnDestroy{
   }
   
 
-  getImages(searchText: string = ''): void {
+  getImages(): void {
     const API_URL = environment.apiUrl;
-    this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: searchText } }).subscribe((data) => {
-   
-    // this.http.get<any[]>(`${API_URL}/get_images_list`).subscribe((data) => {
-      console.log(data);
+    this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
       this.originalImages = this.images;
       this.images = data.map((image) => {
         return {
@@ -75,6 +89,7 @@ export class HomeComponent implements OnDestroy{
           url: image.url,
           tags: image.tags,
           created_at: new Date(image.created_at),
+          selected: false // ajoutez cette ligne
         };
       });
     });
@@ -99,8 +114,8 @@ export class HomeComponent implements OnDestroy{
         }
       );
   }
-  ngOnDestroy(): void {
-    this.searchTextSubscription.unsubscribe();
+
+  hasSelectedImages(): boolean {
+    return this.images.some(image => image.selected);
   }
 }
-

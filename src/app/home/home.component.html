@@ -8,15 +8,17 @@
         [alt]="image"
         class="image"
       />
+      <input type="checkbox" [(ngModel)]="image.selected" class="image-checkbox">
       <div class="image-info">
         <div class="download-button">
-          <!-- <mat-icon (click)="onDownload(image.name)">arrow_drop_down_circle</mat-icon> -->
           <img src="../../assets/ico.png" alt="Download" (click)="onDownload(image.name)" />
         </div>
       </div>
     </div>
   </div>
+  <button (click)="onDeleteSelected()">Supprimer les images sélectionnées</button>
 </div>
+
 
 
 <!-- <p>HOME</p>

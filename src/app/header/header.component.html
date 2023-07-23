@@ -17,13 +17,18 @@
     <div class="search">
       <input
         [(ngModel)]="searchText"
-        (input)="filterImages($event)"
         type="text"
         placeholder="Rechercher"
       />
+      <button (click)="searchImages()">Rechercher</button>
+      <div class="icon-clear" (click)="clearSearch()">
+        <mat-icon>clear</mat-icon>
+      </div>
       <div class="icon-search" (click)="startListening()">
         <mat-icon>mic</mat-icon>
       </div>
     </div>
+    
+    
   </div>
 </nav>
