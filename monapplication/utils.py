@@ -12,11 +12,15 @@ def get_image_tags(image_url):
     tags_result = computervision_client.analyze_image(image_url, visual_features=[VisualFeatureTypes.tags])
     description_result = computervision_client.describe_image(image_url)
 
-    tags = [tag.name for tag in tags_result.tags]
+    # Modify this line to include confidence
+    tags = [{"name": tag.name, "confidence": tag.confidence} for tag in tags_result.tags]
+    
     if description_result.captions:
         description = description_result.captions[0].text
     else:
         description = ""
 
     return tags, description
+
+
 
