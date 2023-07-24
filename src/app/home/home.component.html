@@ -1,8 +1,8 @@
 <app-header></app-header>
 
 <div class="carousel-container">
-  <div class="carousel">
-    <div class="image-container" *ngFor="let image of images">
+  <div class="carousel" *ngFor="let image of images">
+    <div class="image-container">
       <img *ngIf="image && image.url" [src]="image.url" alt="Image"
         (click)="openModal(image)"
         [alt]="image"
@@ -10,14 +10,13 @@
       />
       <div class="image-info">
         <div class="download-button">
+          <!-- <mat-icon (click)="onDownload(image.name)">arrow_drop_down_circle</mat-icon> -->
           <img src="../../assets/ico.png" alt="Download" (click)="onDownload(image.name)" />
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<button *ngIf="hasSelectedImages()" (click)="onDeleteSelected()">Supprimer les images sélectionnées</button>
 
 
 
