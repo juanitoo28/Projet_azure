@@ -21,6 +21,7 @@ export class ListeImagesComponent implements OnInit {
   originalImages: any;
   searchText: string = '';
   searchTextSubscription: Subscription;
+  numberOfColumns = 3; 
 
   constructor(
     private http: HttpClient,
@@ -153,11 +154,15 @@ export class ListeImagesComponent implements OnInit {
     this.imagePreview.nativeElement.style.top = (event.clientY - previewHeight / 2) + 'px';
   }
   
-  
   hidePreview(): void {
     this.previewImageUrl = '';
     this.imagePreview.nativeElement.style.display = 'none';
   }
   
+  // Galerie d'images:
+  changeNumberOfColumns(number: number): void {
+    this.numberOfColumns = number;
+  }
   
 }
+

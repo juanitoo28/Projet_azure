@@ -44,21 +44,30 @@
 </div>
 
 <div *ngIf="displayMode === 'gallery'">
-  <!-- Contenu de la galerie d'images ici -->
+  <select [(ngModel)]="numberOfColumns" (change)="changeNumberOfColumns(numberOfColumns)">
+    <option value="1">1 colonne</option>
+    <option value="2">2 colonnes</option>
+    <option value="3">3 colonnes</option>
+    <option value="4">4 colonnes</option>
+    <option value="5">5 colonnes</option>
+    <!-- ajoutez plus d'options si nécessaire -->
+  </select>
   <div class="container">
-    <div class="image-gallery">
+    <div class="image-gallery" [ngStyle]="{'grid-template-columns': 'repeat(' + numberOfColumns + ', 1fr)'}">
       <div class="image-card" *ngFor="let image of images">
-        <!-- Ajoutez cette case à cocher avant l'image -->
-        <input type="checkbox" [(ngModel)]="image.selected">
-        <img src="{{ image.url }}" alt="{{ image.name }}">
         <h3>{{ image.name }}</h3>
-        <p>{{ image.description }}</p>
-        <p>
+        <!-- Ajoutez cette case à cocher avant l'image -->
+        <img src="{{ image.url }}" alt="{{ image.name }}">
+        <h4>Description: <p>{{ image.description }}</h4>
+        <h4>Tags: <p>
           <span *ngFor="let tag of image.tags">
             {{ tag.name }} : {{ (tag.confidence * 100).toFixed(2) }}%,
           </span>
-        </p>
+        </p></h4>
+        
         <p>{{ image.created_at }}</p>
+
+        <input type="checkbox" [(ngModel)]="image.selected">
       </div>
     </div>
   </div>

@@ -109,32 +109,49 @@ input[type="checkbox"] {
 }
 
 /* CSS pour la galerie d'images */
+
 .image-gallery {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 .image-card {
-  width: calc(33.33% - 20px);
-  margin: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #00b1ca; // Bordure bleue autour de la carte
+  background-color: #000; // Fond noir pour la carte
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // Centre le contenu verticalement
+  align-items: center; // Centre le contenu horizontalement
+  border-radius: 10px; // Coins arrondis pour la carte
+  overflow: hidden;
 }
 
+
 .image-card h3 {
-  margin-top: 0;
+  margin: 10px 0; // Espacement au-dessus et en dessous du titre
+  font-size: 1.2em; // Taille du titre
+  color: #fff; // Couleur du texte
+  text-align: center; // Centre le titre horizontalement
 }
 
 .image-card p {
-  margin-bottom: 0;
+  margin: 0;
+  color: #bbb; // Couleur du texte
+  text-align: center; // Centre le texte horizontalement
 }
 
 .image-card img {
   width: 100%;
-  max-height: 150px;
-  object-fit: cover;
+  height: auto;
+  max-height: 150px; // Limite la hauteur de l'image
+  object-fit: cover; // Remplit la zone de l'image sans déformation
+  border-radius: 10px; // Coins arrondis pour l'image
 }
-/* CSS pour le bouton "Changer de mode" */
+
+
+/* CSS for the "Change mode" button */
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -175,63 +192,18 @@ button {
   margin-bottom: 20px;
 }
 
-/* CSS pour la galerie d'images */
-.image-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Ajout pour centrer la galerie d'images */
-}
-
-.image-card {
-  width: calc(33.33% - 20px);
-  margin: 10px;
-  border: 1px solid #cccccc;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.image-card h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.image-card p {
-  flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  margin: 0;
-}
-
-// .image-preview {
-//   display: none;
-//   width: 400px; // augmenter la taille de l'aperçu
-//   height: 400px; // contrôler la hauteur de l'aperçu
-//   object-fit: contain; // conserver les proportions de l'image
-//   position: absolute; // pour que l'aperçu n'affecte pas la disposition du reste du tableau
-// }
 .image-preview {
   display: none;
   width: 400px;
+  height: 400px;
   position: fixed;
   pointer-events: none;
   z-index: 100;
   border-radius: 10px;
+  object-fit: contain;
   cursor: none;
 }
 
 a:hover {
   cursor: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7), auto;
 }
-
-
-
-
-// a:hover + .image-preview {
-//   display: block;
-// }
-
