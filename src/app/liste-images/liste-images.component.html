@@ -4,27 +4,28 @@
   <button (click)="toggleDisplayMode()">Changer de mode</button>
 </div>
 
-
 <div *ngIf="displayMode === 'table'">
   <table>
     <thead>
       <tr>
         <th>Nom</th>
-        <th>Confidence</th>
         <th>Description</th>
         <th>URL</th>
-        <th>Tags</th>
+        <th>Tags / Confidence</th>
         <th>Date de création</th>
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let image of selectedImage">
+      <ng-container *ngFor="let image of images">
         <tr>
           <td>{{ image.name }}</td>
-          <td>{{ image.tags.confidence }}</td>
           <td>{{ image.description }}</td>
           <td>{{ image.url }}</td>
-          <td>{{ image.tags.confidence }}</td>
+          <td>
+            <span *ngFor="let tag of image.tags">
+              {{ tag.name }} : {{ tag.confidence }},
+            </span>
+          </td>
           <td>{{ image.created_at }}</td>
         </tr>
       </ng-container>
@@ -39,9 +40,12 @@
       <div class="image-card" *ngFor="let image of images">
         <img src="{{ image.url }}" alt="{{ image.name }}">
         <h3>{{ image.name }}</h3>
-        <p>{{ image.confidence }}</p>
         <p>{{ image.description }}</p>
-        <p>{{ image.tags }}</p>
+        <p>
+          <span *ngFor="let tag of image.tags">
+            {{ tag.name }} : {{ tag.confidence }},
+          </span>
+        </p>
         <p>{{ image.created_at }}</p>
       </div>
     </div>

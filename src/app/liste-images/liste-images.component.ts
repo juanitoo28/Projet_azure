@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 import { environment } from '../../environnements/environnement';
 import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { SharedService } from '../shared.service';
 
 import { ImageModalComponent } from '../image-modal/image-modal.component';
 
@@ -14,15 +16,30 @@ export class ListeImagesComponent implements OnInit {
   images: any[] = [];
   selectedImage: any;
   originalImages: any;
+  searchText: string = '';
+  searchTextSubscription: Subscription;
 
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
+    private sharedService: SharedService
   ) {
+    this.searchTextSubscription = this.sharedService.searchText$.subscribe(searchText => {
+      this.searchText = searchText;
       this.getImages();
+    });
+    this.getImages();
   }
 
   ngOnInit(): void {
+    this.getImages();
+  }
+
+  ngOnDestroy(): void {
+    this.searchTextSubscription.unsubscribe();
+  }
+
+  onSearchChange(): void {
     this.getImages();
   }
 
@@ -43,7 +60,7 @@ export class ListeImagesComponent implements OnInit {
 
   getImages(): void {
     const API_URL = environment.apiUrl;
-    this.http.get<any[]>(`${API_URL}/get_images_list`).subscribe((data) => {
+    this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
       this.originalImages = this.images;
       this.images = data.map((image) => {
         return {
@@ -52,7 +69,7 @@ export class ListeImagesComponent implements OnInit {
           url: image.url,
           tags: image.tags,
           created_at: new Date(image.created_at),
-          selected: false // ajoutez cette ligne
+          selected: false
         };
       });
     });
