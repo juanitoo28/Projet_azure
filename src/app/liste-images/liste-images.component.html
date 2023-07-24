@@ -2,6 +2,9 @@
 
 <div class="container">
   <button (click)="toggleDisplayMode()">Changer de mode</button>
+  <!-- Ajoutez ce bouton pour déclencher la suppression des images sélectionnées -->
+  <button (click)="onDeleteSelected()">Supprimer les images sélectionnées</button>
+  <button (click)="onDownloadSelected()">Télécharger les images sélectionnées</button>
 </div>
 
 <div *ngIf="displayMode === 'table'">
@@ -13,6 +16,7 @@
         <th>URL</th>
         <th>Tags / Confidence</th>
         <th>Date de création</th>
+        <th>Sélection</th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +31,8 @@
             </span>
           </td>
           <td>{{ image.created_at }}</td>
+          <!-- Ajoutez cette case à cocher liée à la propriété 'selected' de l'image -->
+          <td><input type="checkbox" [(ngModel)]="image.selected"></td>
         </tr>
       </ng-container>
     </tbody>
@@ -38,6 +44,8 @@
   <div class="container">
     <div class="image-gallery">
       <div class="image-card" *ngFor="let image of images">
+        <!-- Ajoutez cette case à cocher avant l'image -->
+        <input type="checkbox" [(ngModel)]="image.selected">
         <img src="{{ image.url }}" alt="{{ image.name }}">
         <h3>{{ image.name }}</h3>
         <p>{{ image.description }}</p>

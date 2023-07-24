@@ -4,6 +4,7 @@ import { environment } from '../../environnements/environnement';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../shared.service';
+import { forkJoin } from 'rxjs';
 
 import { ImageModalComponent } from '../image-modal/image-modal.component';
 
@@ -50,11 +51,10 @@ export class ListeImagesComponent implements OnInit {
   }
 
   saveImg(image: any): void {
-    this.selectedImage = image; // Stockez la référence de l'image sélectionnée dans la variable selectedImage
-    if (this.selectedImage) { // Vérifiez si selectedImage est défini
-      console.log(this.selectedImage.tags); // Vérifiez les tags de l'image sélectionnée
-  
-      
+    this.selectedImage = image; 
+
+    if (this.selectedImage) { 
+      console.log(this.selectedImage.tags); 
     }
   }
 
@@ -69,7 +69,7 @@ export class ListeImagesComponent implements OnInit {
           url: image.url,
           tags: image.tags,
           created_at: new Date(image.created_at),
-          selected: false
+          selected: false // Assurez-vous que chaque image a une propriété 'selected'
         };
       });
     });
@@ -83,7 +83,6 @@ export class ListeImagesComponent implements OnInit {
       data: selectedImageObject
     });
   }
-  
 
   openModal(image: any): void {
     const dialogRef = this.dialog.open(ImageModalComponent, {
@@ -97,4 +96,45 @@ export class ListeImagesComponent implements OnInit {
     });
     console.log(image.tags)
   }
+
+  onDeleteSelected(): void {
+    const API_URL = environment.apiUrl;
+    const selectedImages = this.images.filter(image => image.selected);
+
+    const deleteObservables = selectedImages.map(image =>
+      this.http.delete(`${API_URL}/delete_image/${encodeURIComponent(image.name)}`)
+    );
+
+    forkJoin(deleteObservables).subscribe(() => {
+      console.log('Images supprimées avec succès');
+      this.getImages();
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  onDownloadSelected(): void {
+    const API_URL = environment.apiUrl;
+    const selectedImages = this.images.filter(image => image.selected);
+  
+    selectedImages.forEach(image => {
+      this.http
+        .get(`${API_URL}/download/${encodeURIComponent(image.name)}`, {
+          responseType: "blob",
+        })
+        .subscribe(
+          (response) => {
+            const url = window.URL.createObjectURL(response);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = image.name;
+            link.click();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
+  }
+  
 }
