@@ -58,9 +58,10 @@ export class ListeImagesComponent implements OnInit {
       data: {
         url: image.url,
         name: image.name,
-        description: '' + image.description,
-        tags: '' + image.tags
+        description: image.description,
+        tags: image.tags
       }
     });
+    console.log(image.tags)
   }
 }

@@ -23,7 +23,7 @@ export class AppComponent {
   getImages(): void {
     const API_URL = environment.apiUrl;
     this.http.get<any[]>(`${API_URL}/get_images_list`).subscribe((data) => {
-      console.log(data);
+      console.log("log data du backend",data);
       this.images = data.map((image) => {
         return {
           name: image.name,

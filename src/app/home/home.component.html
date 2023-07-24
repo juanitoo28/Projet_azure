@@ -1,14 +1,13 @@
 <app-header></app-header>
 
 <div class="carousel-container">
-  <div class="carousel" *ngFor="let image of images">
-    <div class="image-container">
+  <div class="carousel">
+    <div class="image-container" *ngFor="let image of images">
       <img *ngIf="image && image.url" [src]="image.url" alt="Image"
         (click)="openModal(image)"
         [alt]="image"
         class="image"
       />
-      <input type="checkbox" [(ngModel)]="image.selected" class="image-checkbox">
       <div class="image-info">
         <div class="download-button">
           <img src="../../assets/ico.png" alt="Download" (click)="onDownload(image.name)" />
@@ -16,8 +15,9 @@
       </div>
     </div>
   </div>
-  <button (click)="onDeleteSelected()">Supprimer les images sélectionnées</button>
 </div>
+
+<button *ngIf="hasSelectedImages()" (click)="onDeleteSelected()">Supprimer les images sélectionnées</button>
 
 
 

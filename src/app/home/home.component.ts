@@ -14,6 +14,8 @@ import { forkJoin } from 'rxjs';
 })
 export class HomeComponent implements OnDestroy {
   images: any[] = [];
+  selectedImage: any; // Déclarez cette variable pour stocker la référence de l'image sélectionnée
+
   originalImages: any[] = [];
   searchText: string = '';
   title = "azure-storage-demo";
@@ -59,23 +61,31 @@ export class HomeComponent implements OnDestroy {
   }
 
   openModal(image: any): void {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
-      width: '500px',
-      data: {
-        url: image.url,
-        name: image.name,
-        description: image.description,
-        tags: image.tags  // Pass image.tags as is
-      },
-    });
+    this.selectedImage = image; // Stockez la référence de l'image sélectionnée dans la variable selectedImage
+    if (this.selectedImage) { // Vérifiez si selectedImage est défini
+      console.log(this.selectedImage.tags); // Vérifiez les tags de l'image sélectionnée
   
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'delete') {
-        // Refresh the images list if an image was deleted
-        this.getImages();
-      }
-    });
+      const dialogRef = this.dialog.open(ImageModalComponent, {
+        width: '500px',
+        data: {
+          url: this.selectedImage.url,
+          name: this.selectedImage.name,
+          description: this.selectedImage.description,
+          tags: this.selectedImage.tags
+        },
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'delete') {
+          // Rafraîchir les images après la suppression
+          this.getImages();
+        }
+      });
+    }
   }
+  
+  
+  
   
 
   getImages(): void {
