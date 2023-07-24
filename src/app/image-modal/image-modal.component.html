@@ -12,7 +12,7 @@
   <div class="modal-tags">
     <div *ngFor="let tag of data.tags">
         <span class="tag">{{ tag.name }}</span> :
-        <span class="confidence">{{ tag.confidence }}</span>
+        <span class="confidence">{{ (tag.confidence * 100).toFixed(2) }}%</span>
     </div>
 </div>
 

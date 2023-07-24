@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f2f5;
+  background-color: #00b1ca;
 }
 
 .liste {
@@ -41,20 +41,60 @@ select {
 
 /* CSS pour le tableau */
 table {
-  border-collapse: collapse;
   width: 100%;
-  margin-bottom: 20px;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  font-family: sans-serif;
   text-align: left;
 }
 
+th, td {
+  padding: 12px 15px;
+  font-size: 0.8em;
+  text-align: center;
+}
+
 th {
-  background-color: #f2f2f2;
-  color: black;
+  background-color: #00b1ca;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+}
+
+tr {
+  border-bottom: 1px solid #dddddd;
+  color: white; // une couleur de texte plus claire pour les lignes paires
+  text-align: center;
+}
+
+tr:nth-of-type(even) {
+  background-color: #5fc6d3; // une couleur plus claire pour les lignes impaires
+  color: black; // une couleur de texte plus foncée pour les lignes impaires
+  text-align: center;
+}
+
+tr:last-of-type {
+  border-bottom: 2px solid #9bdfe9ea;
+}
+
+td:last-of-type {
+  text-align: right;
+}
+
+td:first-of-type {
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.2);
+  margin-right: 10px;
 }
 
 /* CSS pour la liste simple */
@@ -98,11 +138,34 @@ th {
 button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #007BFF;
+  background-color: #00b1ca;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin: 10px;
+}
+
+.buttonDelete {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ca0000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.buttonDownload {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #1bca00;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
 }
 
 /* Centrage du bouton */
@@ -122,7 +185,7 @@ button {
 .image-card {
   width: calc(33.33% - 20px);
   margin: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -144,20 +207,31 @@ button {
   margin: 0;
 }
 
-
-// /* Media queries pour rendre le tableau responsive */
-// @media (max-width: 768px) {
-//   table {
-//     font-size: 12px;
-//   }
-//   th, td {
-//     padding: 6px;
-//   }
+// .image-preview {
+//   display: none;
+//   width: 400px; // augmenter la taille de l'aperçu
+//   height: 400px; // contrôler la hauteur de l'aperçu
+//   object-fit: contain; // conserver les proportions de l'image
+//   position: absolute; // pour que l'aperçu n'affecte pas la disposition du reste du tableau
 // }
+.image-preview {
+  display: none;
+  width: 400px;
+  position: fixed;
+  pointer-events: none;
+  z-index: 100;
+  border-radius: 10px;
+  cursor: none;
+}
 
-// @media (max-width: 576px) {
-//   .image-card {
-//     width: calc(50% - 20px);
-//   }
+a:hover {
+  cursor: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7), auto;
+}
+
+
+
+
+// a:hover + .image-preview {
+//   display: block;
 // }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 import { environment } from '../../environnements/environnement';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +14,8 @@ import { ImageModalComponent } from '../image-modal/image-modal.component';
   styleUrls: ['./liste-images.component.scss']
 })
 export class ListeImagesComponent implements OnInit {
+  @ViewChild('imagePreview') imagePreview!: ElementRef;
+  previewImageUrl = '';
   images: any[] = [];
   selectedImage: any;
   originalImages: any;
@@ -136,5 +138,26 @@ export class ListeImagesComponent implements OnInit {
         );
     });
   }
+
+  showPreview(event: MouseEvent, imageUrl: string): void {
+    this.previewImageUrl = imageUrl;
+    this.imagePreview.nativeElement.style.display = 'block';
+    this.movePreview(event);
+  }
+  
+  movePreview(event: MouseEvent): void {
+    const previewWidth = this.imagePreview.nativeElement.offsetWidth;
+    const previewHeight = this.imagePreview.nativeElement.offsetHeight;
+  
+    this.imagePreview.nativeElement.style.left = (event.clientX - previewWidth / 2) + 'px';
+    this.imagePreview.nativeElement.style.top = (event.clientY - previewHeight / 2) + 'px';
+  }
+  
+  
+  hidePreview(): void {
+    this.previewImageUrl = '';
+    this.imagePreview.nativeElement.style.display = 'none';
+  }
+  
   
 }

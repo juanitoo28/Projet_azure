@@ -3,8 +3,8 @@
 <div class="container">
   <button (click)="toggleDisplayMode()">Changer de mode</button>
   <!-- Ajoutez ce bouton pour déclencher la suppression des images sélectionnées -->
-  <button (click)="onDeleteSelected()">Supprimer les images sélectionnées</button>
-  <button (click)="onDownloadSelected()">Télécharger les images sélectionnées</button>
+  <button class="buttonDelete" (click)="onDeleteSelected()">Supprimer</button>
+  <button class="buttonDownload" (click)="onDownloadSelected()">Télécharger</button>
 </div>
 
 <div *ngIf="displayMode === 'table'">
@@ -24,10 +24,14 @@
         <tr>
           <td>{{ image.name }}</td>
           <td>{{ image.description }}</td>
-          <td>{{ image.url }}</td>
+          <td>
+            <a href="{{ image.url }}" target="_blank" (mouseover)="showPreview($event, image.url)" (mousemove)="movePreview($event)" (mouseout)="hidePreview()">{{ image.url }}</a>
+            <img #imagePreview class="image-preview" src="{{ previewImageUrl }}" alt="Aperçu de l'image">
+          </td>
+          
           <td>
             <span *ngFor="let tag of image.tags">
-              {{ tag.name }} : {{ tag.confidence }},
+              {{ tag.name }} : {{ (tag.confidence * 100).toFixed(2) }}%,
             </span>
           </td>
           <td>{{ image.created_at }}</td>
@@ -51,7 +55,7 @@
         <p>{{ image.description }}</p>
         <p>
           <span *ngFor="let tag of image.tags">
-            {{ tag.name }} : {{ tag.confidence }},
+            {{ tag.name }} : {{ (tag.confidence * 100).toFixed(2) }}%,
           </span>
         </p>
         <p>{{ image.created_at }}</p>
