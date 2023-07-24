@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SharedService } from '../shared.service';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { HomeComponent } from '../home/home.component';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   searchText = '';
+  
   searchTextChangedSubscription: Subscription = new Subscription();
   constructor(
     private sharedService: SharedService,
