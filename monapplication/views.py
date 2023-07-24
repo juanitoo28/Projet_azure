@@ -156,15 +156,15 @@ def get_images_list(request):
         }
         images_list.append(image_info)
 
-    if search:
-        images_list = list(filter(
-            lambda image: (
-                search in image["name"] or
-                search in image["description"] or
-                any(search in tag for tag in image["tags"])
-            ),
-            images_list
-    ))
+    images_list = list(filter(
+    lambda image: (
+        search in image["name"].lower() or
+        search in image["description"].lower() or
+        any(search in tag['name'].lower() for tag in image["tags"] if isinstance(tag, dict) and 'name' in tag)
+    ),
+    images_list
+))
+
 
     images_list.sort(key=lambda x: x["created_at"], reverse=True)
 
