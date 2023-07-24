@@ -76,3 +76,16 @@ border: 1px solid #bec5dc;
 color: #464f6a;
 border-radius: 5px;
 }
+
+.input-group {
+  position: relative;
+}
+
+.icon-clear {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: black;
+}

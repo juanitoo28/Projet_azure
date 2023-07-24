@@ -15,16 +15,20 @@
       </ul>
     </div>
     <div class="search">
-      <input
-        [(ngModel)]="searchText"
-        type="text"
-        placeholder="Rechercher"
-      />
-      <button (click)="searchImages()">Rechercher</button>
+      <div class="input-group">
+        <input
+          [(ngModel)]="searchText"
+          type="text"
+          placeholder="Rechercher"
+        />
+        <div class="icon-clear" *ngIf="searchText" (click)="clearSearch()">
+          <mat-icon>clear</mat-icon>
+        </div>
+      </div>
+      <button *ngIf="searchText" (click)="searchImages()">Rechercher</button>
       <div class="icon-search" (click)="startListening()">
         <mat-icon>mic</mat-icon>
       </div>
     </div>
-    
   </div>
 </nav>
