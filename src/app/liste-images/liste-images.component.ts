@@ -12,33 +12,49 @@ import { ImageModalComponent } from '../image-modal/image-modal.component';
 })
 export class ListeImagesComponent implements OnInit {
   images: any[] = [];
-  selectedImage =  ""; 
+  selectedImage: any;
+  originalImages: any;
 
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-  ) {}
+  ) {
+      this.getImages();
+  }
 
   ngOnInit(): void {
     this.getImages();
   }
 
+  displayMode: 'table' | 'gallery' = 'table';
+
+  toggleDisplayMode() {
+    this.displayMode = this.displayMode === 'table' ? 'gallery' : 'table';
+  }
+
+  saveImg(image: any): void {
+    this.selectedImage = image; // Stockez la référence de l'image sélectionnée dans la variable selectedImage
+    if (this.selectedImage) { // Vérifiez si selectedImage est défini
+      console.log(this.selectedImage.tags); // Vérifiez les tags de l'image sélectionnée
+  
+      
+    }
+  }
+
   getImages(): void {
     const API_URL = environment.apiUrl;
     this.http.get<any[]>(`${API_URL}/get_images_list`).subscribe((data) => {
-      console.log(data);
-      this.images = data.map((image: any) => { 
+      this.originalImages = this.images;
+      this.images = data.map((image) => {
         return {
           name: image.name,
           description: image.description,
           url: image.url,
           tags: image.tags,
           created_at: new Date(image.created_at),
+          selected: false // ajoutez cette ligne
         };
       });
-      if (this.images.length > 0) {
-        this.selectedImage = this.images[0].url;
-      }
     });
   }
 

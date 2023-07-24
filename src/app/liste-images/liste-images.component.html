@@ -1,11 +1,49 @@
 <app-header></app-header>
 
-<div class="liste">
-  <h2>Liste des images :</h2>
-  <div class="select-container">
-    <select [(ngModel)]="selectedImage" (change)="openModal(selectedImage)">
-      <option *ngFor="let image of images" [ngValue]="image">{{ image.name }}</option>
-    </select>
-  </div>
+<div class="container">
+  <button (click)="toggleDisplayMode()">Changer de mode</button>
 </div>
 
+
+<div *ngIf="displayMode === 'table'">
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Confidence</th>
+        <th>Description</th>
+        <th>URL</th>
+        <th>Tags</th>
+        <th>Date de création</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let image of selectedImage">
+        <tr>
+          <td>{{ image.name }}</td>
+          <td>{{ image.tags.confidence }}</td>
+          <td>{{ image.description }}</td>
+          <td>{{ image.url }}</td>
+          <td>{{ image.tags.confidence }}</td>
+          <td>{{ image.created_at }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="displayMode === 'gallery'">
+  <!-- Contenu de la galerie d'images ici -->
+  <div class="container">
+    <div class="image-gallery">
+      <div class="image-card" *ngFor="let image of images">
+        <img src="{{ image.url }}" alt="{{ image.name }}">
+        <h3>{{ image.name }}</h3>
+        <p>{{ image.confidence }}</p>
+        <p>{{ image.description }}</p>
+        <p>{{ image.tags }}</p>
+        <p>{{ image.created_at }}</p>
+      </div>
+    </div>
+  </div>
+</div>

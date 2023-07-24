@@ -12,7 +12,8 @@ import { HomeComponent } from '../home/home.component';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   searchText = '';
-  
+  isListening: boolean = false;
+  isSearching: boolean = false;
   searchTextChangedSubscription: Subscription = new Subscription();
   constructor(
     private sharedService: SharedService,
@@ -52,6 +53,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
 
   startListening(): void {
+    this.isListening = true;
+    this.isSearching = true;
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
@@ -87,6 +90,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
           mediaRecorder.stop();
+          this.isListening = false;
+          this.isSearching = false;
         }, 3000);
       })
       .catch((err) => {

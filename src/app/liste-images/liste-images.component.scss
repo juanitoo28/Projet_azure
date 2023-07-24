@@ -38,3 +38,126 @@ select {
     border-color: #00b1ca;
   }
 }
+
+/* CSS pour le tableau */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: black;
+}
+
+/* CSS pour la liste simple */
+.simple-list {
+  list-style: none;
+  padding: 0;
+}
+
+.simple-list li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+/* CSS pour la galerie d'images */
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-card {
+  width: calc(33.33% - 20px);
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.image-card h3 {
+  margin-top: 0;
+}
+
+.image-card p {
+  margin-bottom: 0;
+}
+
+.image-card img {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+}
+/* CSS pour le bouton "Changer de mode" */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Centrage du bouton */
+.container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* CSS pour la galerie d'images */
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Ajout pour centrer la galerie d'images */
+}
+
+.image-card {
+  width: calc(33.33% - 20px);
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.image-card p {
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  margin: 0;
+}
+
+
+// /* Media queries pour rendre le tableau responsive */
+// @media (max-width: 768px) {
+//   table {
+//     font-size: 12px;
+//   }
+//   th, td {
+//     padding: 6px;
+//   }
+// }
+
+// @media (max-width: 576px) {
+//   .image-card {
+//     width: calc(50% - 20px);
+//   }
+// }
+

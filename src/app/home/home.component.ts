@@ -15,7 +15,7 @@ import { forkJoin } from 'rxjs';
 export class HomeComponent implements OnDestroy {
   images: any[] = [];
   selectedImage: any; // Déclarez cette variable pour stocker la référence de l'image sélectionnée
-  originalImages: any[] = [];
+  originalImages: any;
   searchText: string = '';
   title = "azure-storage-demo";
   searchTextSubscription: Subscription;
@@ -82,9 +82,6 @@ export class HomeComponent implements OnDestroy {
       });
     }
   }
-  
-  
-  
   
 
   getImages(): void {

@@ -15,19 +15,29 @@
       </ul>
     </div>
     <div class="search">
-      <div class="input-group">
-        <input
-          [(ngModel)]="searchText"
-          type="text"
-          placeholder="Rechercher"
-        />
-        <div class="icon-clear" *ngIf="searchText" (click)="clearSearch()">
-          <mat-icon>clear</mat-icon>
+      <div class="search-input">
+        <div class="input-group">
+          <input
+            [(ngModel)]="searchText"
+            type="text"
+            placeholder="Rechercher"
+          />
+          <div class="icon-clear" *ngIf="searchText" (click)="clearSearch()">
+            <mat-icon>clear</mat-icon>
+          </div>
         </div>
+        <button *ngIf="searchText" (click)="searchImages()">Valider</button>
       </div>
-      <button *ngIf="searchText" (click)="searchImages()">Rechercher</button>
-      <div class="icon-search" (click)="startListening()">
+      
+
+      <!-- <div class="icon-search" (click)="startListening()">
         <mat-icon>mic</mat-icon>
+      </div> -->
+
+      <div class="recoVocal">
+        <div class="icon-search" (click)="startListening()" [class.searching]="isSearching">
+          <mat-icon style="margin-left: -1.6px;">{{ isListening ? 'hearing' : 'mic' }}</mat-icon>
+        </div>
       </div>
     </div>
   </div>

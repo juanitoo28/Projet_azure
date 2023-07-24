@@ -2,6 +2,15 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
   }
+  .button{
+    border: #00b1ca;
+    background-color: #00b1ca;
+    padding: 10px 20px;
+    font-size: 13px;
+    border-radius: 5px;
+    font-weight: 600;
+    color: #fff;
+  }
   
   .send {
     display: flex;
@@ -25,7 +34,7 @@ body {
   
   .label-file {
     cursor: pointer;
-    color: #00b1ca;
+    color: #fff;
     font-weight: bold;
     font-size: 18px;
     margin-right: 5px;
@@ -33,14 +42,14 @@ body {
   }
   
   .label-file:hover {
-    color: #25a5c4;
+    font-size: 22px;
   }
   
   .icon-send {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    // padding: 10px;
     border: 2px solid #00b1ca;
     margin: 10px;
     color: #fff;
@@ -63,8 +72,8 @@ body {
   
   .image-preview {
     margin-top: 10px;
-    max-width: 200px;
-    max-height: 200px;
+    // max-width: 200px;
+    // max-height: 200px;
     border: 1px solid #ccc;
     padding: 5px;
     border-radius: 5px;

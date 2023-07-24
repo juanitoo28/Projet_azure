@@ -1,16 +1,22 @@
 <app-header></app-header>
 <div class="send">
-  <label for="file" class="label-file">Choisir des images</label>
+  <div class="button">
+    <label for="file" class="label-file">Choisir des images</label>
+  </div>
+  <div *ngIf="uploadMessage" [style.color]="uploadMessageColor" class="upload-message">
+    {{uploadMessage}}
+  </div>
   <input id="file" class="input-file" type="file" (change)="onFilesSelected($event)" multiple>
-  <div class="icon-send" (click)="onUpload()"><mat-icon>send</mat-icon></div>
   <div *ngIf="previewUrls.length > 0" class="image-preview">
     <div *ngFor="let url of previewUrls">
       <img [src]="url" alt="Image sélectionnée" />
     </div>
   </div>
-  <div *ngIf="uploadMessage" [style.color]="uploadMessageColor" class="upload-message">
-      {{uploadMessage}}
+  <div style="display: flex;">
+    <h3 style="color: #00b1ca;">Send</h3>
+    <div class="icon-send" (click)="onUpload()"><mat-icon>send</mat-icon></div>
   </div>
+ 
 </div>
 
 
