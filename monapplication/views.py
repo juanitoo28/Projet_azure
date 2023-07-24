@@ -159,12 +159,12 @@ def get_images_list(request):
     if search:
         images_list = list(filter(
             lambda image: (
-                search in image["name"].lower() or
-                search in image["description"].lower() or
-                any(search in tag.lower() for tag in image["tags"])
+                search in image["name"] or
+                search in image["description"] or
+                any(search in tag for tag in image["tags"])
             ),
             images_list
-        ))
+    ))
 
     images_list.sort(key=lambda x: x["created_at"], reverse=True)
 
