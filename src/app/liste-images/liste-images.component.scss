@@ -139,7 +139,7 @@ input[type="checkbox"] {
 .image-card p {
   margin: 0;
   color: #bbb; // Couleur du texte
-  text-align: center; // Centre le texte horizontalement
+  text-align: left; // Centre le texte horizontalement
 }
 
 .image-card img {
@@ -148,6 +148,10 @@ input[type="checkbox"] {
   max-height: 150px; // Limite la hauteur de l'image
   object-fit: cover; // Remplit la zone de l'image sans déformation
   border-radius: 10px; // Coins arrondis pour l'image
+}
+
+.description{
+  text-align: left !important;
 }
 
 

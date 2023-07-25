@@ -57,8 +57,8 @@
       <div class="image-card" *ngFor="let image of images">
         <h3>{{ image.name }}</h3>
         <!-- Ajoutez cette case à cocher avant l'image -->
-        <img src="{{ image.url }}" alt="{{ image.name }}">
-        <h4>Description: <p>{{ image.description }}</h4>
+        <img src="{{ image.url }}" alt="{{ image.name }}"> 
+        <h4 class="description">Description: <p>{{ image.description }}</h4>
         <h4>Tags: <p>
           <span *ngFor="let tag of image.tags">
             {{ tag.name }} : {{ (tag.confidence * 100).toFixed(2) }}%,
