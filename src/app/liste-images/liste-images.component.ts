@@ -21,11 +21,11 @@ export class ListeImagesComponent implements OnInit {
   originalImages: any;
   searchText: string = '';
   searchTextSubscription: Subscription;
-  numberOfColumns = 3; 
+  numberOfColumns = 4; 
   selectedImageForPreview: string | null = null;
   confidenceThreshold: number; 
   confidenceThresholdSubscription: Subscription;  
-
+  selectAllImagesCheckbox: boolean = false;
 
 
   constructor(
@@ -53,6 +53,11 @@ export class ListeImagesComponent implements OnInit {
     this.confidenceThresholdSubscription.unsubscribe();
   }
 
+  onSelectAllImagesChange() {
+    // Mettre à jour la propriété 'selected' de toutes les images en fonction de la case à cocher 'Sélectionner tout'
+    this.images.forEach(image => image.selected = this.selectAllImagesCheckbox);
+  }
+  
   onSearchChange(): void {
     this.getImages();
   }

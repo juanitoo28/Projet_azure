@@ -6,6 +6,9 @@
   <button class="buttonDelete" (click)="onDeleteSelected()">Supprimer</button>
   <button class="buttonDownload" (click)="onDownloadSelected()">Télécharger</button>
 
+  <label for="selectAllImagesCheckbox">Tout sélectionner</label>
+  <input type="checkbox" [(ngModel)]="selectAllImagesCheckbox" (change)="onSelectAllImagesChange()">
+  
   <div class="select-wrapper" *ngIf="displayMode === 'gallery'">
     <i class="fas fa-columns"></i>
     <select [(ngModel)]="numberOfColumns" (change)="changeNumberOfColumns(numberOfColumns)">
