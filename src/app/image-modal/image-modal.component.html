@@ -14,14 +14,14 @@
         <span class="tag">{{ tag.name }}</span> :
         <span class="confidence">{{ (tag.confidence * 100).toFixed(2) }}%</span>
     </div>
-</div>
-
-
-  
-  <div class="delete-button">
-    <img src="../../assets/supprimer.png" alt="Supprimer" (click)="onDelete(data.name)" />
   </div>
+
+  <div class="button-container">
+    <div class="delete-button">
+      <img src="../../assets/supprimer.png" alt="Supprimer" (click)="onDelete(data.name)" />
+    </div>
     <div class="download-button">
       <img src="../../assets/download.png" alt="Download" (click)="onDownload(data.name)" />
     </div>
+  </div>
 </mat-dialog-content>

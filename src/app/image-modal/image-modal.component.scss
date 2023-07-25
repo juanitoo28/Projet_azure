@@ -6,33 +6,27 @@
   width: 600px; // Ajouté pour agrandir la modale
 }
 
-.close-button {
-  position: absolute;
-  top: 20px; // Augmenté l'espace en haut
-  right: 20px; // Augmenté l'espace à droite
-}
-
 .modal-image-container {
   width: 100%;
   max-height: 400px; // Vous pouvez ajuster cette valeur en fonction de vos besoins
   overflow: hidden;
   margin-bottom: 20px;
   position: relative;
-  border-radius: 5px; // Ajouté pour arrondir légèrement les bords de l'image
+  border-radius: 10px; // Ajouté pour arrondir légèrement les bords de l'image
 }
 
 .modal-image {
   width: 100%;
   object-fit: cover;
   height: 100%;
-  border-radius: 5px; // Ajouté pour arrondir légèrement les bords de l'image
+  border-radius: 10px; // Ajouté pour arrondir légèrement les bords de l'image
 }
 
 .modal-title {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #008000; // Changé en vert pour correspondre à votre demande
+  color: #00b1ca; // Changé en vert pour correspondre à votre demande
   text-align: center; // Ajouté pour centrer le titre
 }
 
@@ -61,15 +55,28 @@
     color: #fff;
     padding: 0.2rem 0.5rem;
     border-radius: 20px;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-right: 10px; // Ajusté pour réduire l'espace entre le tag et la confidence
+    margin-bottom: 10px; // Ajusté pour augmenter l'espace entre les tags
+  }
+
+  .confidence {
+    margin-left: 5px; // Ajouté pour ajouter un espacement entre le tag et la confidence
   }
 }
 
-.delete-button {
+.button-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 20px;
+}
+
+.delete-button,
+.download-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px; // Ajusté pour ajouter un espacement entre les boutons
 
   img {
     width: 30px; // Ajustez la largeur de l'image ici
@@ -93,4 +100,3 @@
     cursor: pointer;
   }
 }
-
