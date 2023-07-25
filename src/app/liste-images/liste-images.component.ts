@@ -68,10 +68,10 @@ export class ListeImagesComponent implements OnInit {
     }
   }
 
+  //Ancienne recherche sans la condition des tags supérieur à 95%:
   getImages(): void {
     const API_URL = environment.apiUrl;
     this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
-      this.originalImages = this.images;
       this.images = data.map((image) => {
         return {
           name: image.name,
@@ -79,11 +79,33 @@ export class ListeImagesComponent implements OnInit {
           url: image.url,
           tags: image.tags,
           created_at: new Date(image.created_at),
-          selected: false // Assurez-vous que chaque image a une propriété 'selected'
+          selected: false
         };
       });
+  
+      // Filtrez les images uniquement si un texte de recherche est fourni
+      if (this.searchText) {
+        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= 0.95));
+      }
     });
   }
+  
+  // getImages(): void {
+  //   const API_URL = environment.apiUrl;
+  //   this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
+  //     this.originalImages = this.images;
+  //     this.images = data.map((image) => {
+  //       return {
+  //         name: image.name,
+  //         description: image.description,
+  //         url: image.url,
+  //         tags: image.tags,
+  //         created_at: new Date(image.created_at),
+  //         selected: false // Assurez-vous que chaque image a une propriété 'selected'
+  //       };
+  //     });
+  //   });
+  // }
 
   onSelect(): void {
     console.log(`Selected image: ${this.selectedImage}`);

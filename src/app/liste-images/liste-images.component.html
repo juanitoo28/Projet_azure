@@ -72,6 +72,11 @@
 
       <input type="checkbox" [(ngModel)]="image.selected">
     </div>
+
+    <!-- Element de remplissage -->
+    <div class="image-card full-width" *ngIf="images.length === 0">
+      <p>Aucune image trouvée.</p>
+    </div>
   </div>
 </div>
 

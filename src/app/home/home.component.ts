@@ -83,7 +83,6 @@ export class HomeComponent implements OnDestroy {
     }
   }
   
-
   getImages(): void {
     const API_URL = environment.apiUrl;
     this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
@@ -98,8 +97,32 @@ export class HomeComponent implements OnDestroy {
           selected: false // ajoutez cette ligne
         };
       });
+  
+      // Filtrez les images uniquement si un texte de recherche est fourni
+      if (this.searchText) {
+        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= 0.55));
+      }
     });
   }
+  
+  //Ancienne recherche sans la condition des tags supérieur à 95%:
+
+  // getImages(): void {
+  //   const API_URL = environment.apiUrl;
+  //   this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
+  //     this.originalImages = this.images;
+  //     this.images = data.map((image) => {
+  //       return {
+  //         name: image.name,
+  //         description: image.description,
+  //         url: image.url,
+  //         tags: image.tags,
+  //         created_at: new Date(image.created_at),
+  //         selected: false // ajoutez cette ligne
+  //       };
+  //     });
+  //   });
+  // }
 
   onDownload(imageName: any): void {
     const API_URL = environment.apiUrl;
