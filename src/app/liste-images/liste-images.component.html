@@ -55,7 +55,7 @@
   </table>
 </div>
 
-<div class="container">
+<div class="container" *ngIf="displayMode === 'gallery'">
   <div class="image-gallery" [ngStyle]="{'grid-template-columns': 'repeat(' + numberOfColumns + ', 1fr)'}">
     <div class="image-card" *ngFor="let image of images">
       <h3>{{ image.name }}</h3>
@@ -81,4 +81,3 @@
     <img src="{{ selectedImageForPreview }}" alt="Selected Image">
   </div>
 </div>
-

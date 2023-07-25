@@ -44,9 +44,10 @@ nav {
 
 
 .search{
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 }
+
 .icon-search {
   display: flex;
   justify-content: center;
@@ -62,19 +63,29 @@ align-items: center;
   background: #00b1ca;
 }
 
-input{
-padding: 10px 12px;
-margin: 5px;
-border: 1px solid #bec5dc;
-color: #464f6a;
-border-radius: 5px;
+.icon-search.isListening {
+  background-color: #ff0000; // Red when recording
+  border: 1px solid #ff0000; // Red border when recording
 }
-select{
-padding: 10px 12px;
-margin: 5px;
-border: 1px solid #bec5dc;
-color: #464f6a;
-border-radius: 5px;
+
+.icon-search.isConverting {
+  background-color: #ff7700; // Orange when converting
+  border: 1px solid #ff7700; // Orange border when converting
+}
+
+.icon-search.isSearching {
+  background-color: #ff0000; // Green when searching
+  border: 1px solid #ff0000; // Green border when searching
+}
+
+
+
+input{
+  padding: 10px 12px;
+  margin: 5px;
+  border: 1px solid #bec5dc;
+  color: #464f6a;
+  border-radius: 5px;
 }
 
 .input-group {
@@ -89,18 +100,24 @@ border-radius: 5px;
   cursor: pointer;
   color: black;
 }
+
 .search-input{
   display: grid;
+  
   button{
-    padding: 1px 12px;
+    padding: 8px 16px;  /* Increase padding */
     cursor: pointer;
     margin: 5px;
-    border: 1px solid #bec5dc;
-    color: #464f6a;
-    border-radius: 5px;
+    border: none;  /* Remove border */
+    color: #FFF;  /* Change text color to white */
+    border-radius: 10px;  /* Smooth corners */
+    font-size: 1.2em;  /* Increase font size */
+    background-color: #00b1ca;  /* Change background color */
+    transition: background-color 0.3s ease;  /* Add a transition on background color */
+
+    /* Change background color on hover */
+    &:hover {
+      background-color: #007b8a;
+    }
   }
 }
-.icon-search.searching {
-  background-color: #ff0000; /* Remplacez la couleur par celle de votre choix */
-}
-

@@ -14,10 +14,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   searchText = '';
   isListening: boolean = false;
   isSearching: boolean = false;
+  isConverting: boolean = false;
+  private audioStream: MediaStream | null = null; 
   searchTextChangedSubscription: Subscription = new Subscription();
   constructor(
     private sharedService: SharedService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -26,10 +28,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.searchText = text;
       }
     );
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        this.audioStream = stream;  // MODIFIÉE
+      })
+      .catch((err) => {
+        console.error('Error:', err);
+      });
   }
 
   ngOnDestroy(): void {
     this.searchTextChangedSubscription.unsubscribe();
+    if (this.audioStream) {
+      this.audioStream.getTracks().forEach((track) => track.stop());
+    }
   }
 
   // Ancienne recherche:
@@ -40,9 +53,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // }
 
   searchImages(): void {
-    const searchText = this.searchText.trim(); // Assurez-vous de supprimer les espaces inutiles
-    this.sharedService.setSearchText(searchText);
+    const searchText = this.searchText.trim(); 
+    if (searchText === '') {
+      this.clearSearch();
+    } else {
+      this.sharedService.setSearchText(searchText);
+    }
   }
+
+  onInput(): void {
+    if (this.searchText.trim() === '') {
+      this.sharedService.setSearchText('');
+    }
+  }
+    
 
   clearSearch(): void {
     this.searchText = ''; // Efface le texte de recherche
@@ -50,52 +74,75 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Vous pouvez également appeler la fonction de recherche ici si vous ne voulez pas que l'utilisateur ait à cliquer sur le bouton de recherche après avoir effacé le texte
     // this.searchImages();
   }
-  
+  // Ajoutez une nouvelle souscription pour surveiller les changements de texte de recherche
+private searchTextSubscription: Subscription = new Subscription();
+private mediaRecorder: MediaRecorder | null = null;
 
-  startListening(): void {
-    this.isListening = true;
-    this.isSearching = true;
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        const mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start();
+startListening(): void {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      if (!this.audioStream) {
+        console.error('Audio stream not initialized');
+        return;
+      }
+      this.isListening = true;
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.start();
 
-        const audioChunks: Blob[] = [];
-        mediaRecorder.addEventListener('dataavailable', (event) => {
-          audioChunks.push(event.data);
-        });
-
-        mediaRecorder.addEventListener('stop', () => {
-          const audioBlob = new Blob(audioChunks, {
-            type: 'audio/webm',
-          });
-
-          // Remplacez l'URL par l'URL de votre serveur Django
-          const apiUrl = 'http://localhost:8000/azure_speech_to_text/';
-
-          const formData = new FormData();
-          formData.append('audio_data', audioBlob, 'audio.webm');
-
-          this.http.post<{ transcript: string }>(apiUrl, formData).subscribe(
-            (response) => {
-              const transcript = response.transcript.replace(/\.$/, '');
-              this.sharedService.setSearchText(transcript);
-            },
-            (error) => {
-              console.error('Error:', error);
-            }
-          );
-        });
-
-        setTimeout(() => {
-          mediaRecorder.stop();
-          this.isListening = false;
-          this.isSearching = false;
-        }, 3000);
-      })
-      .catch((err) => {
-        console.error('Error:', err);
+      const audioChunks: Blob[] = [];
+      mediaRecorder.addEventListener('dataavailable', (event) => {
+        audioChunks.push(event.data);
       });
+
+      mediaRecorder.addEventListener('stop', () => {
+        const audioBlob = new Blob(audioChunks, {
+          type: 'audio/webm',
+        });
+
+        // Remplacez l'URL par l'URL de votre serveur Django
+        const apiUrl = 'http://localhost:8000/azure_speech_to_text/';
+
+        const formData = new FormData();
+        formData.append('audio_data', audioBlob, 'audio.webm');
+
+        this.isConverting = true; 
+
+        this.http.post<{ transcript: string }>(apiUrl, formData).subscribe(
+          (response) => {
+            const transcript = response.transcript.replace(/\.$/, '');
+            this.sharedService.setSearchText(transcript);
+            this.isConverting = false; 
+            this.isListening = false; 
+            this.isSearching = false; 
+          },
+          (error) => {
+            console.error('Error:', error);
+            this.isListening = false; 
+            this.isSearching = false; 
+          }
+        );
+      });
+
+      setTimeout(() => {
+        mediaRecorder.stop();
+        this.isSearching = true;
+      }, 3000);
+    })
+    .catch((err) => {
+      console.error('Error:', err);
+    });
+}
+
+
+stopListening(): void {
+  if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+    this.mediaRecorder.stop();
+    this.isListening = false;
+    this.isSearching = false;
+    // Annulez l'abonnement lorsque l'enregistrement est terminé
+    this.searchTextSubscription.unsubscribe();
   }
+}
+
 }

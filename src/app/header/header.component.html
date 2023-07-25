@@ -21,6 +21,7 @@
             [(ngModel)]="searchText"
             type="text"
             placeholder="Rechercher"
+            (input)="onInput()" 
           />
           <div class="icon-clear" *ngIf="searchText" (click)="clearSearch()">
             <mat-icon>clear</mat-icon>
@@ -28,16 +29,13 @@
         </div>
         <button *ngIf="searchText" (click)="searchImages()">Valider</button>
       </div>
-      
-
-      <!-- <div class="icon-search" (click)="startListening()">
-        <mat-icon>mic</mat-icon>
-      </div> -->
 
       <div class="recoVocal">
-        <div class="icon-search" (click)="startListening()" [class.searching]="isSearching">
-          <mat-icon style="margin-left: -1.6px;">{{ isListening ? 'hearing' : 'mic' }}</mat-icon>
+        <div class="icon-search" [class.isListening]="isListening" [class.isConverting]="isConverting" [class.isSearching]="isSearching" (click)="startListening()">
+          <mat-icon>{{ isListening || isConverting ? 'hearing' : 'mic' }}</mat-icon>
         </div>
+        
+        
       </div>
     </div>
   </div>
