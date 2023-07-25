@@ -22,6 +22,8 @@ export class ListeImagesComponent implements OnInit {
   searchText: string = '';
   searchTextSubscription: Subscription;
   numberOfColumns = 3; 
+  selectedImageForPreview: string | null = null;
+
 
   constructor(
     private http: HttpClient,
@@ -48,6 +50,11 @@ export class ListeImagesComponent implements OnInit {
   }
 
   displayMode: 'table' | 'gallery' = 'table';
+
+  selectImageForPreview(url: string) {
+    this.selectedImageForPreview = url;
+  }
+  
 
   toggleDisplayMode() {
     this.displayMode = this.displayMode === 'table' ? 'gallery' : 'table';

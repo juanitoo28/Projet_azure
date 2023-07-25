@@ -7,8 +7,8 @@ body {
   padding: 20px;
   margin: 40px auto;
   max-width: 400px;
-  min-width: 200px; /* Ajout d'une largeur minimale */
-  text-align: center; /* Centrer le titre */
+  min-width: 200px;
+  text-align: center;
 }
 
 h2 {
@@ -17,29 +17,88 @@ h2 {
   color: #00b1ca;
 }
 
-.select-container {
+.button-container {
   display: flex;
+  align-items: center;
   justify-content: center;
-  width: 100%; /* Ajout d'une largeur de 100% pour que la liste déroulante occupe l'espace disponible */
+  gap: 10px;
 }
 
-select {
-  padding: 10px 12px;
-  margin: 5px;
-  border: 1px solid #bec5dc;
-  color: #464f6a;
-  border-radius: 5px;
-  font-size: 16px;
-  outline: none;
-  transition: border-color 0.3s ease;
-  width: 100%; /* Ajout d'une largeur de 100% pour que la liste déroulante occupe l'espace disponible */
-
-  &:focus {
-    border-color: #00b1ca;
+.select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  
+  &::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    pointer-events: none;
+    transform: translateY(-50%);
+    color: black;
   }
 }
 
-/* CSS pour le tableau */
+i {
+  color: #000000;
+}
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.modal-content img {
+  cursor: pointer;
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+select {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  background: #fff200;
+  color: #000000;
+  font-size: 16px;
+  transition: all 0.3s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 25px;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  }
+}
+
 table {
   width: 100%;
   max-width: 100%;
@@ -66,13 +125,13 @@ th {
 
 tr {
   border-bottom: 1px solid #dddddd;
-  color: white; // une couleur de texte plus claire pour les lignes paires
+  color: white;
   text-align: center;
 }
 
 tr:nth-of-type(even) {
-  background-color: #5fc6d3; // une couleur plus claire pour les lignes impaires
-  color: black; // une couleur de texte plus foncée pour les lignes impaires
+  background-color: #5fc6d3;
+  color: black;
   text-align: center;
 }
 
@@ -97,7 +156,6 @@ input[type="checkbox"] {
   margin-right: 10px;
 }
 
-/* CSS pour la liste simple */
 .simple-list {
   list-style: none;
   padding: 0;
@@ -108,8 +166,6 @@ input[type="checkbox"] {
   font-size: 16px;
 }
 
-/* CSS pour la galerie d'images */
-
 .image-gallery {
   display: grid;
   gap: 10px;
@@ -117,45 +173,55 @@ input[type="checkbox"] {
 }
 
 .image-card {
-  border: 2px solid #00b1ca; // Bordure bleue autour de la carte
-  background-color: #000; // Fond noir pour la carte
+  cursor: default;
+  border: 2px solid #00b1ca;
+  background-color: #000;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center; // Centre le contenu verticalement
-  align-items: center; // Centre le contenu horizontalement
-  border-radius: 10px; // Coins arrondis pour la carte
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 10px;
   overflow: hidden;
 }
 
-
 .image-card h3 {
-  margin: 10px 0; // Espacement au-dessus et en dessous du titre
-  font-size: 1.2em; // Taille du titre
-  color: #fff; // Couleur du texte
-  text-align: center; // Centre le titre horizontalement
+  margin: 10px 0;
+  font-size: 1.2em;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+}
+
+.image-card h4 {
+  font-size: 0.9em;
+  color: #ddd;
+  text-align: left;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .image-card p {
-  margin: 0;
-  color: #bbb; // Couleur du texte
-  text-align: left; // Centre le texte horizontalement
+  font-size: 0.8em;
+  color: #bbb;
+  text-align: left;
+  width: 100%;
 }
 
 .image-card img {
+  cursor: pointer;
   width: 100%;
   height: auto;
-  max-height: 150px; // Limite la hauteur de l'image
-  object-fit: cover; // Remplit la zone de l'image sans déformation
-  border-radius: 10px; // Coins arrondis pour l'image
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .description{
   text-align: left !important;
 }
 
-
-/* CSS for the "Change mode" button */
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -189,7 +255,6 @@ button {
   margin: 10px;
 }
 
-/* Centrage du bouton */
 .container {
   display: flex;
   justify-content: center;
