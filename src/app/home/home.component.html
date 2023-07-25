@@ -1,4 +1,8 @@
 <app-header></app-header>
+<div class="confidence-wrapper">
+  <input [(ngModel)]="confidenceThreshold" (change)="onConfidenceThresholdChange()" placeholder="Confidence Threshold" type="number" min="0" max="1" step="0.01">
+  <p class="confidence-description">Précision de la recherche</p>
+</div>
 
 <div class="carousel-container">
   <div class="carousel" *ngFor="let image of images">

@@ -23,6 +23,9 @@ export class ListeImagesComponent implements OnInit {
   searchTextSubscription: Subscription;
   numberOfColumns = 3; 
   selectedImageForPreview: string | null = null;
+  confidenceThreshold: number; 
+  confidenceThresholdSubscription: Subscription;  
+
 
 
   constructor(
@@ -30,11 +33,15 @@ export class ListeImagesComponent implements OnInit {
     private dialog: MatDialog,
     private sharedService: SharedService
   ) {
+    this.confidenceThreshold = 0.55; // Initialisation à une valeur par défaut
     this.searchTextSubscription = this.sharedService.searchText$.subscribe(searchText => {
       this.searchText = searchText;
       this.getImages();
     });
-    this.getImages();
+    this.confidenceThresholdSubscription = this.sharedService.confidenceThreshold$.subscribe(confidenceThreshold => {
+      this.confidenceThreshold = confidenceThreshold;
+      this.getImages();
+    });
   }
 
   ngOnInit(): void {
@@ -43,6 +50,7 @@ export class ListeImagesComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.searchTextSubscription.unsubscribe();
+    this.confidenceThresholdSubscription.unsubscribe();
   }
 
   onSearchChange(): void {
@@ -60,6 +68,15 @@ export class ListeImagesComponent implements OnInit {
     this.displayMode = this.displayMode === 'table' ? 'gallery' : 'table';
   }
 
+  onConfidenceThresholdChange(): void {
+    this.sharedService.setConfidenceThreshold(this.confidenceThreshold);
+  }
+  
+
+  setConfidenceThreshold(threshold: number): void {
+    this.sharedService.setConfidenceThreshold(threshold);
+  }
+
   saveImg(image: any): void {
     this.selectedImage = image; 
 
@@ -68,10 +85,10 @@ export class ListeImagesComponent implements OnInit {
     }
   }
 
-  //Ancienne recherche sans la condition des tags supérieur à 95%:
   getImages(): void {
     const API_URL = environment.apiUrl;
     this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
+      this.originalImages = this.images;
       this.images = data.map((image) => {
         return {
           name: image.name,
@@ -85,10 +102,12 @@ export class ListeImagesComponent implements OnInit {
   
       // Filtrez les images uniquement si un texte de recherche est fourni
       if (this.searchText) {
-        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= 0.95));
+        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= this.confidenceThreshold));  // modification de cette ligne
       }
     });
   }
+
+  //Ancienne recherche sans la condition des tags supérieur à 95%:
   
   // getImages(): void {
   //   const API_URL = environment.apiUrl;

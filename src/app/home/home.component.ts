@@ -14,27 +14,31 @@ import { forkJoin } from 'rxjs';
 })
 export class HomeComponent implements OnDestroy {
   images: any[] = [];
-  selectedImage: any; // Déclarez cette variable pour stocker la référence de l'image sélectionnée
+  selectedImage: any;
   originalImages: any;
   searchText: string = '';
   title = "azure-storage-demo";
   searchTextSubscription: Subscription;
+  confidenceThreshold: number;  // ajout de cette ligne
+  confidenceThresholdSubscription: Subscription;  // ajout de cette ligne
 
   constructor(private http: HttpClient, public dialog: MatDialog, private sharedService: SharedService) {
+    this.confidenceThreshold = 0.55; // Initialisation à une valeur par défaut
     this.searchTextSubscription = this.sharedService.searchText$.subscribe(searchText => {
       this.searchText = searchText;
       this.getImages();
     });
-  }
+    this.confidenceThresholdSubscription = this.sharedService.confidenceThreshold$.subscribe(confidenceThreshold => {
+      this.confidenceThreshold = confidenceThreshold;
+      this.getImages();
+    });
+}
 
-  ngOnInit(): void {
-    this.getImages();
-  }
 
   ngOnDestroy(): void {
     this.searchTextSubscription.unsubscribe();
+    this.confidenceThresholdSubscription.unsubscribe();  // ajout de cette ligne
   }
-
   onDeleteSelected(): void {
     const API_URL = environment.apiUrl;
     // Filtrer les images sélectionnées
@@ -94,17 +98,18 @@ export class HomeComponent implements OnDestroy {
           url: image.url,
           tags: image.tags,
           created_at: new Date(image.created_at),
-          selected: false // ajoutez cette ligne
+          selected: false
         };
       });
   
       // Filtrez les images uniquement si un texte de recherche est fourni
       if (this.searchText) {
-        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= 0.55));
+        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= this.confidenceThreshold));  // modification de cette ligne
       }
     });
   }
   
+
   //Ancienne recherche sans la condition des tags supérieur à 95%:
 
   // getImages(): void {
@@ -147,4 +152,9 @@ export class HomeComponent implements OnDestroy {
   hasSelectedImages(): boolean {
     return this.images.some(image => image.selected);
   }
+
+  onConfidenceThresholdChange(): void {
+    this.sharedService.setConfidenceThreshold(this.confidenceThreshold);
+  }
+  
 }
