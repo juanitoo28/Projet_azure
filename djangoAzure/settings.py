@@ -34,9 +34,9 @@ print("Media URL: ", MEDIA_URL)
 SECRET_KEY = "django-insecure-24z%cmd6ot@_7w#a@v$hnf&xt=d6zy#jde+gum2lp7#9l@hy88"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
