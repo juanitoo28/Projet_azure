@@ -12,3 +12,4 @@ sqlparse==0.4.4
 typing_extensions==4.7.1
 whitenoise==6.5.0
 gunicorn==21.2.0
+azure-storage-blob==12.17.0
