@@ -66,7 +66,7 @@ MIDDLEWARE = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://newapp2.azurewebsites.net"
+    "http://localhost:4200",
 ]
 
 CORS_ALLOW_HEADERS = [
