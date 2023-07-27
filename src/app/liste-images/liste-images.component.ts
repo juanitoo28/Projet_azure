@@ -107,10 +107,40 @@ export class ListeImagesComponent implements OnInit {
   
       // Filtrez les images uniquement si un texte de recherche est fourni
       if (this.searchText) {
-        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= this.confidenceThreshold));  // modification de cette ligne
+        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= this.confidenceThreshold));
+  
+        // Trier les images par ordre décroissant de confiance
+        this.images.sort((a, b) => {
+          const tagA = a.tags.find((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase());
+          const tagB = b.tags.find((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase());
+  
+          // Utilisez la confiance comme critère de tri, en ordre décroissant
+          return tagB.confidence - tagA.confidence;
+        });
       }
     });
   }
+  // getImages(): void {
+  //   const API_URL = environment.apiUrl;
+  //   this.http.get<any[]>(`${API_URL}/get_images_list`, { params: { search: this.searchText } }).subscribe((data) => {
+  //     this.originalImages = this.images;
+  //     this.images = data.map((image) => {
+  //       return {
+  //         name: image.name,
+  //         description: image.description,
+  //         url: image.url,
+  //         tags: image.tags,
+  //         created_at: new Date(image.created_at),
+  //         selected: false
+  //       };
+  //     });
+  
+  //     // Filtrez les images uniquement si un texte de recherche est fourni
+  //     if (this.searchText) {
+  //       this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= this.confidenceThreshold));  // modification de cette ligne
+  //     }
+  //   });
+  // }
 
   //Ancienne recherche sans la condition des tags supérieur à 95%:
   

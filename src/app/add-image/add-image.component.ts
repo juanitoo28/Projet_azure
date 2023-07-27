@@ -22,10 +22,25 @@ export class AddImageComponent implements OnInit {
   onFilesSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
     if (target.files) {
-      this.selectedFiles = Array.from(target.files);
-      this.previewFiles();
+      this.selectedFiles = [];
+      this.uploadMessage = null;
+      Array.from(target.files).forEach((file) => {
+        if (file.size > 5000000) {  // Taille max 5Mo
+          this.uploadMessage = "La taille des fichiers ne peut pas dépasser 5Mo.";
+          this.uploadMessageColor = "red";
+        } else if (file.type !== "image/jpeg" && file.type !== "image/png") {  // Seuls les types JPEG et PNG sont autorisés
+          this.uploadMessage = "Seuls les fichiers de type JPEG et PNG sont autorisés.";
+          this.uploadMessageColor = "red";
+        } else {
+          this.selectedFiles.push(file);
+        }
+      });
+      if (this.selectedFiles.length > 0) {
+        this.previewFiles();
+      }
     }
   }
+  
 
   previewFiles() {
     this.previewUrls = [];

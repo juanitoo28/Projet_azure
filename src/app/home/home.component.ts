@@ -104,10 +104,20 @@ export class HomeComponent implements OnDestroy {
   
       // Filtrez les images uniquement si un texte de recherche est fourni
       if (this.searchText) {
-        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= this.confidenceThreshold));  // modification de cette ligne
+        this.images = this.images.filter(image => image.tags.some((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase() && tag.confidence >= this.confidenceThreshold));
+  
+        // Trier les images par ordre décroissant de confiance
+        this.images.sort((a, b) => {
+          const tagA = a.tags.find((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase());
+          const tagB = b.tags.find((tag: any) => tag.name.toLowerCase() === this.searchText.toLowerCase());
+  
+          // Utilisez la confiance comme critère de tri, en ordre décroissant
+          return tagB.confidence - tagA.confidence;
+        });
       }
     });
   }
+  
   
 
   //Ancienne recherche sans la condition des tags supérieur à 95%:
