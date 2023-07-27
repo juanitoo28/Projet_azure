@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SharedService } from '../shared.service';
 import { Subscription } from 'rxjs';
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
+import { Router, NavigationEnd } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -14,10 +16,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isConverting: boolean = false; 
   isSearching: boolean = false;
   searchTextChangedSubscription: Subscription = new Subscription();
+  routerEventSubscription: Subscription = new Subscription();
 
-  constructor(private sharedService: SharedService) {}
+  constructor(private sharedService: SharedService, private router: Router) {}
 
   ngOnInit(): void {
+    this.routerEventSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.searchText = '';
+        this.isListening = false;
+        this.isConverting = false;
+        this.isSearching = false;
+        this.clearSearch();
+      }
+    });
     this.searchTextChangedSubscription = this.sharedService.searchTextChanged.subscribe(
       (text) => {
         console.log('New search text:', text);
@@ -28,6 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.searchTextChangedSubscription.unsubscribe();
+    this.routerEventSubscription.unsubscribe();
   }
 
   startListening(): void {
