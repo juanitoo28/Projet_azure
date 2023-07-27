@@ -31,11 +31,13 @@
       </div>
 
       <div class="recoVocal">
-        <div class="icon-search" [class.isListening]="isListening" [class.isConverting]="isConverting" [class.isSearching]="isSearching" (click)="startListening()">
+        <div class="icon-search" 
+             [class.isListening]="isListening && !isSearching" 
+             [class.isConverting]="isConverting && !isSearching" 
+             [class.isSearching]="isSearching && searchText == ''" 
+             (click)="startListening()">
           <mat-icon>{{ isListening || isConverting ? 'hearing' : 'mic' }}</mat-icon>
         </div>
-        
-        
       </div>
     </div>
   </div>
