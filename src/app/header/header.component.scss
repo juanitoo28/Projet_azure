@@ -27,6 +27,7 @@ nav {
   .container-fluid{
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .navbar-collapse {
