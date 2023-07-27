@@ -34,7 +34,7 @@ print("Media URL: ", MEDIA_URL)
 SECRET_KEY = "django-insecure-24z%cmd6ot@_7w#a@v$hnf&xt=d6zy#jde+gum2lp7#9l@hy88"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -138,7 +138,7 @@ DATABASES = {
         'NAME': 'bddimages',
         'USER': 'jean',
         'PASSWORD': 'Liberty!',
-        'HOST': 'bddimg.postgres.database.azure.com',
+        'HOST': 'bddimg2.postgres.database.azure.com',
         'PORT': '5432',
     }
 }
