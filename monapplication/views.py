@@ -37,32 +37,75 @@ endpoint = "https://apiimg.cognitiveservices.azure.com/"
 
 computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
 
+import os
+
 @csrf_exempt
 def azure_speech_to_text(request):
     if request.method == 'POST':
         audio_data = request.FILES['audio_data']
 
-        SPEECH_KEY="26f0aa02efb842cf82756f651e8cf9ef"
-        SPEECH_REGION="westeurope"
-        # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
+        # Save audio file to disk
+        audio_file_name = 'temp_audio.wav'
+        with open(audio_file_name, 'wb+') as destination:
+            for chunk in audio_data.chunks():
+                destination.write(chunk)
+
+        # Initialize Azure Speech SDK
+        SPEECH_KEY = "26f0aa02efb842cf82756f651e8cf9ef"
+        SPEECH_REGION = "westeurope"
         speech_config = speechsdk.SpeechConfig(subscription=SPEECH_KEY, region=SPEECH_REGION)
         speech_config.speech_recognition_language="en-US"
 
-        audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
+        # Use the saved audio file in the audio config
+        audio_config = speechsdk.audio.AudioConfig(filename=audio_file_name)
         speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
 
-        # Effectuez la reconnaissance vocale
-        print("Speak into your microphone.")
-        result = speech_recognizer.recognize_once_async().get()
-        # result = speech_recognizer.recognize_once()
+        # Perform speech recognition
+        print("Listening for speech in audio file.")
+        result = speech_recognizer.recognize_once()
 
-        # Retournez le texte transcrit
+        # Remember to delete the file after use
+        os.remove(audio_file_name)
+
+        # Return the transcribed text
         if result.reason == speechsdk.ResultReason.RecognizedSpeech:
             return JsonResponse({'transcript': result.text})
         else:
             return JsonResponse({'error': 'Speech recognition failed'})
 
     return JsonResponse({'error': 'Invalid request'})
+
+
+# @csrf_exempt
+# def azure_speech_to_text(request):
+#     print('Request received')
+#     if request.method == 'POST':
+#         audio_data = request.FILES['audio_data']
+
+#         SPEECH_KEY="26f0aa02efb842cf82756f651e8cf9ef"
+#         SPEECH_REGION="westeurope"
+#         # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
+#         speech_config = speechsdk.SpeechConfig(subscription=SPEECH_KEY, region=SPEECH_REGION)
+#         speech_config.speech_recognition_language="en-US"
+
+#         # audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
+#         audio_input = speechsdk.audio.AudioInput(stream=audio_data)
+#         audio_config = speechsdk.audio.AudioConfig(audio_input=audio_input)
+
+#         speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+
+#         # Effectuez la reconnaissance vocale
+#         print("Speak into your microphone.")
+#         result = speech_recognizer.recognize_once_async().get()
+#         # result = speech_recognizer.recognize_once()
+
+#         # Retournez le texte transcrit
+#         if result.reason == speechsdk.ResultReason.RecognizedSpeech:
+#             return JsonResponse({'transcript': result.text})
+#         else:
+#             return JsonResponse({'error': 'Speech recognition failed'})
+
+#     return JsonResponse({'error': 'Invalid request'})
 
 @csrf_exempt
 def upload(request):
