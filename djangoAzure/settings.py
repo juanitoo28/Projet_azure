@@ -67,6 +67,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
+    "https://app-angular-azure-b8b230ef7406.herokuapp.com/",
 ]
 
 CORS_ALLOW_HEADERS = [
