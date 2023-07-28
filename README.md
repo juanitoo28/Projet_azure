@@ -1,5 +1,9 @@
 # Projet Angular Front et projet Django Back
-Lancement du projet en local :
+Le projet est déployé en ligne aux adresses suivantes:
+django: https://newapp2.azurewebsites.net/images/
+angular: https://app-angular-azure-b8b230ef7406.herokuapp.com/
+
+Vous pouvez aussi le lancer en local vient ces commandes:
 
 Projet Django:
 Git clone la branche "django"
