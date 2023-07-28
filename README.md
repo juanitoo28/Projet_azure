@@ -11,6 +11,13 @@ python manage.py runserver
 Projet Angular: 
 Git clone la branche "angular"
 
+Modifier le fichier environnement.ts qui se trouve dans le dossier src/environnements:
+Changer le chemin de la production par localhost:
+export const environment = {
+  production: true,
+  apiUrl: "http://localhost:8000", // Remplacez ceci par l'URL de votre serveur Django en production
+};
+
 Ouvrir le terminal et exécuter : 
 npm install
 
