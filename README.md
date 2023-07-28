@@ -22,7 +22,7 @@ Ouvrir le terminal et exécuter :
 npm install
 
 Ensuite lancer le projet: 
-npm start
+ng serve
 
 Lien du trello : https://trello.com/invite/b/LMEdvwCz/ATTI557e97c4cc35e239854486db613b5ea31F8BEFDD/digital-asset-management
 
