@@ -4,9 +4,6 @@ Lancement du projet en local :
 Projet Django:
 Git clone la branche "django"
 
-Ouvrir le terminal et installer tous les packets:
-python -m pip install SomePackage
-
 lancer le serveur avec la commande : 
 python manage.py runserver
 
