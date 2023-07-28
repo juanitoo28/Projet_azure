@@ -17,6 +17,9 @@ cd mon_env
 Ensuite:
 source bin/activate
 
+Une fois activé, taper:
+cd ..
+
 Normalement vous devriez voir tout à gauche du chemin dans le terminal le nom de votre environnement virtuel:
 (mon_env)
 
