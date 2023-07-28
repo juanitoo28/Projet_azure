@@ -8,7 +8,19 @@ Vous pouvez aussi le lancer en local vient ces commandes:
 Projet Django:
 Git clone la branche "django"
 
-lancer le serveur avec la commande : 
+Lancer le serveur avec la commande : 
+python manage.py runserver
+
+Si vous rencontrez une erreur concernant les modules, merci de bien vouloir rentrer dans l'environnemment virtuel:
+cd mon_env
+
+Ensuite:
+source bin/activate
+
+Normalement vous devriez voir tout à gauche du chemin dans le terminal le nom de votre environnement virtuel:
+(mon_env)
+
+Ensuite relancer le serveur avec la commande : 
 python manage.py runserver
 
 
